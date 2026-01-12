@@ -40,7 +40,7 @@ secp256k1 = { version = "0.28.0", optional = true, features = ["recovery", "rand
 sha3 = "0.10.8"
 serde = "1.0.188"
 serde_derive = "1.0.188"
-serde_json = "1.0.107"
+serde_json = "1.0.149"
 thiserror = "1.0.49"
 web3 = { version = "0.20.0", optional = true, default-features = false, features = ["http-rustls-tls", "ws-rustls-tokio", "signing", "ipc-tokio"] }
 web-sys = { version = "0.3.64", optional = true, features = ["Window"] }
