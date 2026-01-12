@@ -23,7 +23,7 @@ migration = []
 log = "0.4"
 log-derive = "0.4.1"
 async-std = { version = "1.12.0", features = ["attributes", "tokio1"] }
-async-trait = "0.1.73"
+async-trait = "0.1.89"
 base64 = "0.21.7"
 bs58 = "0.5.0"
 chrono = "0.4.31"
