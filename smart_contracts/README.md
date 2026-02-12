@@ -37,7 +37,7 @@ The following folders should be generated as the result:
 * [IndyDidRegistry](./contracts/did/IndyDidRegistry.sol) - `indybesu` DID Registry
     * [IndyDidRegistry TS contract wrapper class](./contracts-ts/IndyDidRegistry.ts)
 * [EthereumExtDidRegistry](./contracts/did/EthereumExtDidRegistry.sol) - [Ethereum DID Registry](https://github.com/uport-project/ethr-did-registry/tree/master) extended with permission checks
-    * [DidRegistry TS contract wrapper class](./contracts-ts/EthereumDIDRegistry.ts)
+    * [DidRegistry TS contract wrapper class](./contracts-ts/EthereumDidRegistry.ts)
 * [SchemaRegistry](contracts/anoncreds/SchemaRegistryInterface.sol) - contract to manage Schemas
     * [SchemaRegistry TS contract wrapper class](./contracts-ts/SchemaRegistry.ts)
 * [CredentialDefinitionRegistry](contracts/anoncreds/CredentialDefinitionRegistryInterface.sol) - contract to manage Credential Definitions
@@ -86,7 +86,7 @@ You can find sample scripts demonstrating the usage of deployed contracts in the
 
 #### Steps
 
-1. Prepare the [input file](scripts/genesis/config.ts) with the initial state of each contract.
+1. Prepare the [input file](scripts/genesis/contractConfig.ts) with the initial state of each contract.
 
 2. Compile contracts:
    ```
