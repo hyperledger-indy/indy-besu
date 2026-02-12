@@ -1,24 +1,43 @@
 name: CI
 
 on:
+  # Run on every pull request, manually and on pushes to main (PR merged).
   pull_request:
     paths: "**"
 
   workflow_dispatch:
 
+  push:
+    branches:
+      - main
+
 jobs:
+  markdown-linter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Check links
+        uses: lycheeverse/lychee-action@v2
+        with:
+          fail: true
+
   lint-contracts:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+
       - name: Setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "20.x"
+
       - name: Install dependencies
         run: yarn install
         working-directory: smart_contracts
+
       - name: Lint
         run: yarn lint-check
         working-directory: smart_contracts
@@ -28,19 +47,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+
       - name: Setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "20.x"
+
       - name: Install dependencies
         run: yarn install
         working-directory: smart_contracts
+
       - name: Unit tests
         run: yarn test
         working-directory: smart_contracts
+
       - name: Run localnet
         run: ./network/scripts/run.sh && sleep 40
+
       - name: Demos
         run: yarn demos
         working-directory: smart_contracts
@@ -49,11 +73,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+
       - name: Install latest rust toolchain
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
+
       - name: Lint
         run: cargo fmt --check
         working-directory: vdr
@@ -63,20 +89,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+
       - name: Setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "20.x"
+
       - name: Install dependencies
         #TODO: unpin hardhat version when node.js is bumped
         run: yarn add --dev hardhat@2.19.4
         working-directory: smart_contracts
+
       - name: Compile smart contracts
         run: yarn compile
         working-directory: smart_contracts
+
       - name: Archive contract artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: smart-contracts-artifacts
           path: smart_contracts/artifacts/**
@@ -87,18 +117,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+
       - name: Install latest rust toolchain
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
+
       - name: Download contract artifcats
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: smart-contracts-artifacts
           path: smart_contracts/artifacts
+
       - name: Run localnet
         run: ./network/scripts/run.sh && sleep 40
+
       - name: Test
         run: cargo test --features=ledger_test -- --test-threads=1
         working-directory: vdr
