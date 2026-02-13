@@ -9,6 +9,8 @@ jobs:
   # GitHub does not support Rust packages, so currently a Rust package won't be
   # published. As an alternative, you can specify dependencies from git repositories.
   # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html#specifying-dependencies-from-git-repositories
+  # A pre-compiled library binary - libindy_besu_vdr.so, for Linux x86_64 targets -
+  # will also be provided along language bindings for Python and Kotlin.
 
   publish-smart-contracts-package:
     runs-on: ubuntu-latest
@@ -39,3 +41,79 @@ jobs:
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-vdr-release-artifacts:
+    strategy:
+      # Using a "matrix" to make it easier to add more targets in the future.
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            bindings: [kotlin, python]
+            lib: libindy_besu_vdr.so
+            uniffi_lib: libindy_besu_vdr_uniffi.so
+            archive: indy-besu-vdr-linux-x86_64.tar.gz
+            kotlin_bindings_archive: indy-besu-vdr-kotlin-bindings.tar.gz
+            python_bindings_archive: indy-besu-vdr-python-bindings.tar.gz
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install latest rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Build release artifacts
+        run: cargo build --release --target ${{ matrix.target }}
+        working-directory: vdr
+
+      - name: Build "uniffi-bindgen" binary
+        run: |
+          cargo build --release --target ${{ matrix.target }}
+        working-directory: vdr/uniffi
+
+      - name: Generate Kotlin bindings
+        if: contains(matrix.bindings, 'kotlin')
+        run: |
+          cargo run --bin uniffi-bindgen generate \
+            --library target/${{ matrix.target }}/release/${{ matrix.uniffi_lib }} \
+            --language kotlin \
+            --out-dir out/kotlin
+        working-directory: vdr/uniffi
+
+      - name: Generate Python bindings
+        if: contains(matrix.bindings, 'python')
+        run: |
+          cargo run --bin uniffi-bindgen generate \
+            --library target/${{ matrix.target }}/release/${{ matrix.uniffi_lib }} \
+            --language python \
+            --out-dir out/python
+        working-directory: vdr/uniffi
+
+      - name: Generate Swift bindings
+        if: contains(matrix.bindings, 'swift')
+        run: |
+          cargo run --bin uniffi-bindgen generate \
+            --library target/${{ matrix.target }}/release/${{ matrix.uniffi_lib }} \
+            --language swift
+            --out-dir out/swift
+        working-directory: vdr/uniffi
+
+      - name: Package artifacts
+        run: |
+          tar -czvf ${{ matrix.archive }} -C target/${{ matrix.target }}/release ${{ matrix.lib }}
+          tar -czvf ${{ matrix.kotlin_bindings_archive }} -C uniffi/out/kotlin .
+          tar -czvf ${{ matrix.python_bindings_archive }} -C uniffi/out/python .
+        working-directory: vdr
+
+      - name: Upload artifacts to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            vdr/${{ matrix.archive }}
+            vdr/${{ matrix.kotlin_bindings_archive }}
+            vdr/${{ matrix.python_bindings_archive }}
