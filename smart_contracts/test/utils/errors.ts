@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) 2024 DSR Corporation, Denver, Colorado.
+ * https://www.dsr-corporation.com
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 export namespace AuthErrors {
   export const Unauthorized = 'Unauthorized'
 }
@@ -14,6 +20,15 @@ export namespace ClErrors {
   // CredDef errors
   export const CredentialDefinitionAlreadyExist = 'CredentialDefinitionAlreadyExist'
   export const CredentialDefinitionNotFound = 'CredentialDefinitionNotFound'
+
+  // RevReg errors
+  export const AccumulatorMismatch = 'AccumulatorMismatch'
+
+  export const NotRevocationRegistryDefinitionIssuer = 'NotRevocationRegistryDefinitionIssuer'
+
+  export const RevocationRegistryDefinitionAlreadyExist = 'RevocationRegistryDefinitionAlreadyExist'
+
+  export const RevocationRegistryDefinitionNotFound = 'RevocationRegistryDefinitionNotFound'
 }
 
 export namespace DidErrors {

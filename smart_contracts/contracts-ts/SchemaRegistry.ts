@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) 2024 DSR Corporation, Denver, Colorado.
+ * https://www.dsr-corporation.com
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import { concat, getBytes, keccak256, Signature, toUtf8Bytes, toUtf8String } from 'ethers'
 import { SchemaMetadataStruct } from '../typechain-types/contracts/anoncreds/SchemaRegistry'
 import { Contract } from '../utils/contract'

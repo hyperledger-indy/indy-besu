@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) 2024 DSR Corporation, Denver, Colorado.
+ * https://www.dsr-corporation.com
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import * as fs from 'fs-extra'
 import path from 'path'
 import { padLeft, sha3 } from 'web3-utils'
@@ -9,6 +15,7 @@ import {
   EthereumDidRegistryConfig,
   IndyDidRegistryConfig,
   LegacyMappingRegistryConfig,
+  RevocationRegistryConfig,
   RolesConfig,
   SchemasConfig,
   UniversalDidResolverConfig,
@@ -108,6 +115,7 @@ export interface ContractsConfigs {
   upgradeControl: UpgradeControlConfig
   validatorControl: ValidatorsConfig
   legacyMapping: LegacyMappingRegistryConfig
+  revocationRegistry: RevocationRegistryConfig
 }
 
 export function prepareConfig(): ContractsConfigs {
@@ -247,6 +255,17 @@ export function prepareConfig(): ContractsConfigs {
       description: 'Smart contract to store mapping of legacy identifiers to new one',
       data: {
         universalDidResolver: contracts.universalDidResolver.address,
+        upgradeControlAddress: contracts.upgradeControl.address,
+        roleControlContractAddress: contracts.roleControl.address,
+      },
+    },
+    revocationRegistry: {
+      name: 'RevocationRegistry',
+      address: contracts.revocationRegistry.address,
+      description: 'Smart contract to manage revocations',
+      data: {
+        universalDidResolverAddress: contracts.universalDidResolver.address,
+        credentialDefinitionRegistryAddress: contracts.credDefRegistry.address,
         upgradeControlAddress: contracts.upgradeControl.address,
         roleControlContractAddress: contracts.roleControl.address,
       },

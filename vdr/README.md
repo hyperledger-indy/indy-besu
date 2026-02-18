@@ -23,7 +23,7 @@ The library provides methods to:
 
 In order to build library, you must have [Rust](https://rustup.rs/) installed. 
 
-Used Rust version: `1.70.0`
+Used Rust version: `1.79.0`
 
 ```
 cargo build

@@ -1,3 +1,7 @@
+// Copyright (c) 2024 DSR Corporation, Denver, Colorado.
+// https://www.dsr-corporation.com
+// SPDX-License-Identifier: Apache-2.0
+
 use aries_askar::kms::{KeyAlg, LocalKey};
 use indy_besu_vdr::{Address, BasicSigner};
 

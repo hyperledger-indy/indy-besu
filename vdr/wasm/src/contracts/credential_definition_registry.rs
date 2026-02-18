@@ -1,3 +1,7 @@
+// Copyright (c) 2024 DSR Corporation, Denver, Colorado.
+// https://www.dsr-corporation.com
+// SPDX-License-Identifier: Apache-2.0
+
 use indy_besu_vdr::{
     credential_definition_registry, Address, CredentialDefinition, CredentialDefinitionId,
     SchemaId, SignatureType, DID,
@@ -20,7 +24,7 @@ impl CredentialDefinitionRegistry {
     pub async fn build_create_credential_definition_transaction(
         client: &LedgerClientWrapper,
         from: &str,
-        cred_def: CredentialDefinitionWrapper,
+        cred_def: &CredentialDefinitionWrapper,
     ) -> Result<TransactionWrapper> {
         let client = client.0.clone();
         let address = Address::from(from);
@@ -38,7 +42,7 @@ impl CredentialDefinitionRegistry {
     #[wasm_bindgen(js_name = buildCreateCredentialDefinitionEndorsingData)]
     pub async fn build_create_credential_definition_endorsing_data(
         client: &LedgerClientWrapper,
-        cred_def: CredentialDefinitionWrapper,
+        cred_def: &CredentialDefinitionWrapper,
     ) -> Result<TransactionEndorsingDataWrapper> {
         credential_definition_registry::build_create_credential_definition_endorsing_data(
             &client.0,

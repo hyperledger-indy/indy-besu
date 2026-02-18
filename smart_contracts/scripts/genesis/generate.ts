@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) 2024 DSR Corporation, Denver, Colorado.
+ * https://www.dsr-corporation.com
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import { writeJson } from '../../utils'
 import {
   accountControl,
@@ -5,6 +11,7 @@ import {
   ethereumDidRegistry,
   indyDidRegistry,
   legacyMappingRegistry,
+  revocationRegistry,
   roleControl,
   schemaRegistry,
   universalDidResolver,
@@ -27,6 +34,7 @@ function main() {
     ...schemaRegistry(config.schemaRegistry),
     ...credentialDefinitionRegistry(config.credentialDefinitionRegistry),
     ...legacyMappingRegistry(config.legacyMapping),
+    ...revocationRegistry(config.revocationRegistry),
   }
   writeJson(contracts, 'ContractsGenesis.json')
 }

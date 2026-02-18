@@ -1,3 +1,7 @@
+// Copyright (c) 2024 DSR Corporation, Denver, Colorado.
+// https://www.dsr-corporation.com
+// SPDX-License-Identifier: Apache-2.0
+
 use crate::{
     client::Client,
     error::{VdrError, VdrResult},
@@ -5,6 +9,7 @@ use crate::{
     Address, Block, BlockDetails, Transaction,
 };
 
+use async_std::task;
 use async_trait::async_trait;
 use ethereum_types::{H160, U64};
 use log::{trace, warn};
@@ -99,6 +104,14 @@ impl Client for Web3Client {
                 NUMBER_TX_CONFIRMATIONS,
             )
             .await?;
+
+        // let tx_hash = self.client.eth().send_raw_transaction(Bytes::from(transaction)).await?;
+        // let receipt = loop {
+        //     if let Ok(Some(receipt)) = self.client.eth().transaction_receipt(tx_hash).await {
+        //         break receipt;
+        //     }
+        //     task::sleep(Duration::from_secs(1)).await;
+        // };
 
         if receipt.is_txn_reverted() {
             if let Some(revert_reason) = receipt.revert_reason {
@@ -202,7 +215,7 @@ impl Client for Web3Client {
             .eth()
             .logs(filter)
             .await
-            .map_err(|_| VdrError::GetTransactionError("Could not query events".to_string()))?;
+            .map_err(|e| VdrError::GetTransactionError(e.to_string()))?;
 
         let events: Vec<EventLog> = logs
             .into_iter()

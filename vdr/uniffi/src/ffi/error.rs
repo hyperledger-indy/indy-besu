@@ -1,3 +1,7 @@
+// Copyright (c) 2024 DSR Corporation, Denver, Colorado.
+// https://www.dsr-corporation.com
+// SPDX-License-Identifier: Apache-2.0
+
 use indy_besu_vdr::VdrError as VdrError_;
 
 #[derive(thiserror::Error, Debug, uniffi::Error)]
@@ -61,6 +65,18 @@ pub enum VdrError {
 
     #[error("Invalid credential definition: {}", msg)]
     InvalidCredentialDefinition { msg: String },
+
+    #[error("Invalid DID document: {}", msg)]
+    InvalidDidDocument { msg: String },
+
+    #[error("Invalid Revocation Registry Definition: {}", msg)]
+    InvalidRevocationRegistryDefinition { msg: String },
+
+    #[error("Invalid Revocation Registry Entry: {}", msg)]
+    InvalidRevocationRegistryEntry { msg: String },
+
+    #[error("Invalid Revocation Registry Status List: {}", msg)]
+    InvalidRevocationRegistryStatusList { msg: String },
 }
 
 pub type VdrResult<T> = Result<T, VdrError>;
@@ -95,6 +111,16 @@ impl From<VdrError_> for VdrError {
             VdrError_::InvalidSchema(msg) => VdrError::InvalidSchema { msg },
             VdrError_::InvalidCredentialDefinition(msg) => {
                 VdrError::InvalidCredentialDefinition { msg }
+            }
+            VdrError_::InvalidDidDocument(msg) => VdrError::InvalidDidDocument { msg },
+            VdrError_::InvalidRevocationRegistryDefinition(msg) => {
+                VdrError::InvalidRevocationRegistryDefinition { msg }
+            }
+            VdrError_::InvalidRevocationRegistryEntry(msg) => {
+                VdrError::InvalidRevocationRegistryEntry { msg }
+            }
+            VdrError_::InvalidRevocationRegistryStatusList(msg) => {
+                VdrError::InvalidRevocationRegistryStatusList { msg }
             }
         }
     }

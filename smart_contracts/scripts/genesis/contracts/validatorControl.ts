@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) 2024 DSR Corporation, Denver, Colorado.
+ * https://www.dsr-corporation.com
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import { BN } from 'bn.js'
 import { padLeft, sha3 } from 'web3-utils'
 import { ContractConfig } from '../contractConfig'

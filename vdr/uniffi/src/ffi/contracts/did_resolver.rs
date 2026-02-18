@@ -1,3 +1,7 @@
+// Copyright (c) 2024 DSR Corporation, Denver, Colorado.
+// https://www.dsr-corporation.com
+// SPDX-License-Identifier: Apache-2.0
+
 use crate::{JsonValue, LedgerClient, VdrError, VdrResult};
 use serde_json::json;
 
@@ -15,7 +19,7 @@ pub async fn resolve_did(
     };
     let did_with_meta =
         did_resolver::resolve_did(&client.client, &DID::from(did), options.as_ref()).await?;
-    Ok(json!(did_with_meta))
+    Ok(JsonValue::from(json!(did_with_meta)))
 }
 
 #[derive(uniffi::Record)]

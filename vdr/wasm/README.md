@@ -2,7 +2,7 @@
 
 ### Requirements
 
-* Rust of version 1.65.0 or higher.
+* Rust of version 1.79.0 or higher.
 * Wasm-pack: https://rustwasm.github.io/wasm-pack/installer/
 
 ### Build

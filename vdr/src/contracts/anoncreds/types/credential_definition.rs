@@ -1,3 +1,7 @@
+// Copyright (c) 2024 DSR Corporation, Denver, Colorado.
+// https://www.dsr-corporation.com
+// SPDX-License-Identifier: Apache-2.0
+
 use crate::{
     error::VdrError,
     types::{ContractOutput, ContractParam},
@@ -153,7 +157,8 @@ pub mod test {
     };
     use serde_json::json;
 
-    pub const _CREDENTIAL_DEFINITION_ID: &str = "did:ethr:testnet:0xf0e2db6c8dc6c681bb5d6ad121a107f300e9b2b5/anoncreds/v0/CLAIM_DEF/did:ethr:testnet:0xf0e2db6c8dc6c681bb5d6ad121a107f300e9b2b5/anoncreds/v0/SCHEMA/F1DClaFEzi3t/1.0.0/default";
+    pub const CREDENTIAL_DEFINITION_ID: &str = "did:ethr:testnet:0xf0e2db6c8dc6c681bb5d6ad121a107f300e9b2b5/anoncreds/v0/CLAIM_DEF/did:ethr:testnet:0xf0e2db6c8dc6c681bb5d6ad121a107f300e9b2b5:F1DClaFEzi3t:1.0.0/default";
+    pub const CREDENTIAL_DEFINITION_ID_WITHOUT_NETWORK: &str = "did:ethr:0xf0e2db6c8dc6c681bb5d6ad121a107f300e9b2b5/anoncreds/v0/CLAIM_DEF/did:ethr:0xf0e2db6c8dc6c681bb5d6ad121a107f300e9b2b5:F1DClaFEzi3t:1.0.0/default";
     pub const CREDENTIAL_DEFINITION_TAG: &str = "default";
 
     pub fn credential_definition_value() -> serde_json::Value {

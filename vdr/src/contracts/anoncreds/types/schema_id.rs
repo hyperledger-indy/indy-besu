@@ -1,3 +1,7 @@
+// Copyright (c) 2024 DSR Corporation, Denver, Colorado.
+// https://www.dsr-corporation.com
+// SPDX-License-Identifier: Apache-2.0
+
 use crate::{contracts::did::types::did::DID, types::ContractParam, VdrError, VdrResult};
 
 use crate::contracts::types::did::ParsedDid;
@@ -97,9 +101,23 @@ impl TryFrom<&SchemaId> for ParsedSchemaId {
         let parsed_issuer_id = ParsedDid::try_from(&issuer_id)?;
         Ok(ParsedSchemaId {
             issuer_id: DID::from(parts[0]),
-            name: parts[3].to_string(),
-            version: parts[4].to_string(),
+            name: parts[4].to_string(),
+            version: parts[5].to_string(),
             network: parsed_issuer_id.network,
         })
+    }
+}
+
+#[cfg(test)]
+pub mod test {
+    use super::*;
+    use crate::contracts::anoncreds::types::schema::test::{SCHEMA_ID, SCHEMA_ID_WITHOUT_NETWORK};
+
+    #[test]
+    fn schema_id_without_network() {
+        assert_eq!(
+            SchemaId::from(SCHEMA_ID_WITHOUT_NETWORK),
+            SchemaId::from(SCHEMA_ID).without_network().unwrap()
+        )
     }
 }

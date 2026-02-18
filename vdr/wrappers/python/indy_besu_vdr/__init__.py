@@ -1,3 +1,7 @@
+# Copyright (c) 2024 DSR Corporation, Denver, Colorado.
+# https://www.dsr-corporation.com
+# SPDX-License-Identifier: Apache-2.0
+
 """Indy2 VDR Python wrapper"""
 from .types import (
     Transaction,
@@ -9,6 +13,9 @@ from .types import (
     SchemaRegistry,
     CredentialDefinition,
     CredentialDefinitionRegistry,
+    RevocationRegistryDefinition,    
+    RevocationRegistryEntry,
+    RevocationRegistry,
     LegacyMapping,
     Endorsement,
     RoleControl,
@@ -44,6 +51,9 @@ __all__ = (
     "SchemaRegistry",
     "CredentialDefinition",
     "CredentialDefinitionRegistry",
+    "RevocationRegistryDefinition",
+    "RevocationRegistry",
+    "RevocationRegistryEntry",
     "LegacyMapping",
     "Endorsement",
     "RoleControl",

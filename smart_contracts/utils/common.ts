@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) 2024 DSR Corporation, Denver, Colorado.
+ * https://www.dsr-corporation.com
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import { readFileSync } from 'fs'
 import { resolve } from 'path'
 
@@ -25,6 +31,7 @@ export interface ContractsConfigs {
   ethereumDidRegistry: ContractConfig
   indyDidRegistry: ContractConfig
   universalDidResolver: ContractConfig
+  revocationRegistry: ContractConfig
 }
 
 export interface BesuConfig {

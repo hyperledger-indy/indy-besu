@@ -1,3 +1,7 @@
+// Copyright (c) 2024 DSR Corporation, Denver, Colorado.
+// https://www.dsr-corporation.com
+// SPDX-License-Identifier: Apache-2.0
+
 use crate::{contracts::did::types::did::DID, types::ContractParam, VdrError, VdrResult};
 
 use crate::contracts::types::did::ParsedDid;
@@ -9,7 +13,7 @@ use sha3::Digest;
 pub struct CredentialDefinitionId(String);
 
 impl CredentialDefinitionId {
-    const ID_PATH: &'static str = "anoncreds/v0/CLAIM_DEF";
+    pub const ID_PATH: &'static str = "anoncreds/v0/CLAIM_DEF";
 
     pub fn build(issuer_id: &DID, schema_id: &str, tag: &str) -> CredentialDefinitionId {
         CredentialDefinitionId::from(
@@ -89,11 +93,76 @@ impl TryFrom<&CredentialDefinitionId> for ParsedCredentialDefinitionId {
         }
         let issuer_id = DID::from(parts[0]);
         let parsed_issuer_id = ParsedDid::try_from(&issuer_id)?;
+        let parsed_schema_id = ParsedCredentialDefinitionSchemaId::try_from(parts[4])?;
         Ok(ParsedCredentialDefinitionId {
             issuer_id: DID::from(parts[0]),
-            schema_id: parts[3].to_string(),
-            tag: parts[4].to_string(),
+            schema_id: parsed_schema_id.as_short_id()?,
+            tag: parts[5].to_string(),
             network: parsed_issuer_id.network,
         })
+    }
+}
+
+#[derive(Debug, Default, Clone, PartialEq, Deserialize, Serialize)]
+pub(crate) struct ParsedCredentialDefinitionSchemaId {
+    pub(crate) issuer_id: DID,
+    pub(crate) name: String,
+    pub(crate) version: String,
+    pub(crate) network: Option<String>,
+}
+
+impl ParsedCredentialDefinitionSchemaId {
+    pub(crate) fn as_short_id(&self) -> VdrResult<String> {
+        Ok(format!(
+            "{}:{}:{}",
+            self.issuer_id.without_network()?.as_ref(),
+            self.name,
+            self.version
+        ))
+    }
+}
+
+impl TryFrom<&str> for ParsedCredentialDefinitionSchemaId {
+    type Error = VdrError;
+
+    fn try_from(schema_id: &str) -> Result<Self, Self::Error> {
+        let parts = schema_id.split(':').collect::<Vec<&str>>();
+        if parts.len() == 6 {
+            return Ok(ParsedCredentialDefinitionSchemaId {
+                issuer_id: DID::build(parts[1], None, parts[3]),
+                name: parts[4].to_string(),
+                version: parts[5].to_string(),
+                network: Some(parts[2].to_string()),
+            });
+        }
+        if parts.len() == 5 {
+            return Ok(ParsedCredentialDefinitionSchemaId {
+                issuer_id: DID::build(parts[1], None, parts[2]),
+                name: parts[3].to_string(),
+                version: parts[4].to_string(),
+                network: None,
+            });
+        }
+        return Err(VdrError::CommonInvalidData(
+            "Invalid credential definition id provided".to_string(),
+        ));
+    }
+}
+
+#[cfg(test)]
+pub mod test {
+    use super::*;
+    use crate::contracts::anoncreds::types::credential_definition::test::{
+        CREDENTIAL_DEFINITION_ID, CREDENTIAL_DEFINITION_ID_WITHOUT_NETWORK,
+    };
+
+    #[test]
+    fn cred_def_id_id_without_network() {
+        assert_eq!(
+            CredentialDefinitionId::from(CREDENTIAL_DEFINITION_ID_WITHOUT_NETWORK),
+            CredentialDefinitionId::from(CREDENTIAL_DEFINITION_ID)
+                .without_network()
+                .unwrap()
+        )
     }
 }

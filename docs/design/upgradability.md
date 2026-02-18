@@ -157,8 +157,5 @@ Diamond proxy pattern introduces the concept of "Diamonds" which are a more modu
 
 ## Resources
 
-- https://docs.openzeppelin.com/upgrades-plugins/1.x/
+- https://docs.openzeppelin.com/upgrades-plugins/
 - https://blog.logrocket.com/using-uups-proxy-pattern-upgrade-smart-contracts/
-
-
-

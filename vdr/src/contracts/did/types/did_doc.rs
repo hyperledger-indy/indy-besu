@@ -1,3 +1,7 @@
+// Copyright (c) 2024 DSR Corporation, Denver, Colorado.
+// https://www.dsr-corporation.com
+// SPDX-License-Identifier: Apache-2.0
+
 use crate::{
     contracts::did::types::did::{DID, DID_URL_REGEX, RELATIVE_DID_URL_REGEX},
     error::{VdrError, VdrResult},
