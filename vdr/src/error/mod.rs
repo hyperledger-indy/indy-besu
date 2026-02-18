@@ -78,6 +78,15 @@ pub enum VdrError {
 
     #[error("Invalid credential definition: {}", _0)]
     InvalidCredentialDefinition(String),
+
+    #[error("Invalid revocation registry definition: {}", _0)]
+    InvalidRevocationRegistryDefinition(String),
+
+    #[error("Invalid revocation registry entry: {}", _0)]
+    InvalidRevocationRegistryEntry(String),
+
+    #[error("Invalid revocation status list: {}", _0)]
+    InvalidRevocationRegistryStatusList(String),
 }
 
 pub type VdrResult<T> = Result<T, VdrError>;

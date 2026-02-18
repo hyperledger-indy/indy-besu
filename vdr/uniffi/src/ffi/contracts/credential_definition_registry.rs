@@ -37,15 +37,11 @@ pub async fn build_create_credential_definition_transaction(
 #[uniffi::export(async_runtime = "tokio")]
 pub async fn build_create_credential_definition_endorsing_data(
     client: &LedgerClient,
-    credential_definition: &str,
+    credential_definition: &CredentialDefinition,
 ) -> VdrResult<TransactionEndorsingData> {
-    let credential_definition =
-        serde_json::from_str(credential_definition).map_err(|err| VdrError::CommonInvalidData {
-            msg: format!("Unable to parse credential definition. Err: {:?}", err),
-        })?;
     credential_definition_registry::build_create_credential_definition_endorsing_data(
         &client.client,
-        &credential_definition,
+        &CredentialDefinition_::from(credential_definition),
     )
     .await
     .map(TransactionEndorsingData::from)
@@ -75,7 +71,7 @@ pub fn parse_resolve_credential_definition_result(
         &client.client,
         &bytes,
     )?;
-    Ok(json!(cred_def))
+    Ok(JsonValue::from(json!(cred_def)))
 }
 
 #[uniffi::export(async_runtime = "tokio")]
@@ -108,7 +104,7 @@ impl From<CredentialDefinition_> for CredentialDefinition {
             schema_id: cred_def.schema_id.as_ref().to_string(),
             cred_def_type: cred_def.cred_def_type.to_str().to_string(),
             tag: cred_def.tag.to_string(),
-            value: cred_def.value,
+            value: JsonValue::from(cred_def.value),
         }
     }
 }
@@ -120,7 +116,7 @@ impl From<&CredentialDefinition> for CredentialDefinition_ {
             schema_id: SchemaId::from(cred_def.schema_id.as_ref()),
             cred_def_type: SignatureType::CL,
             tag: cred_def.tag.to_string(),
-            value: cred_def.value.clone(),
+            value: cred_def.value.clone().into_inner(),
         }
     }
 }

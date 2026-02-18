@@ -22,8 +22,10 @@ pub async fn build_create_did_transaction(
     did: &str,
     did_doc: JsonValue,
 ) -> VdrResult<Transaction> {
-    let did_doc = serde_json::from_value(did_doc).map_err(|err| VdrError::CommonInvalidData {
-        msg: format!("Unable to parse DID DDocument. Err: {:?}", err),
+    let did_doc = serde_json::from_value(did_doc.into_inner()).map_err(|err| {
+        VdrError::CommonInvalidData {
+            msg: format!("Unable to parse DID DDocument. Err: {:?}", err),
+        }
     })?;
     did_indy_registry::build_create_did_transaction(
         &client.client,
@@ -128,5 +130,5 @@ pub async fn build_resolve_did_transaction(
 #[uniffi::export]
 pub fn parse_resolve_did_result(client: &LedgerClient, bytes: Vec<u8>) -> VdrResult<JsonValue> {
     let did_record = did_indy_registry::parse_resolve_did_result(&client.client, &bytes)?;
-    Ok(json!(did_record))
+    Ok(JsonValue::from(json!(did_record)))
 }

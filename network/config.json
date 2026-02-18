@@ -1,46 +1,50 @@
 {
-    "chainId": 1337,
-    "nodeAddress": "http://127.0.0.1:8545",
-    "contracts": {
-        "validatorControl": {
-            "specPath": "smart_contracts/artifacts/contracts/network/ValidatorControl.sol/ValidatorControl.json",
-            "address": "0x0000000000000000000000000000000000007777"
-        },
-        "accountControl": {
-            "specPath": "smart_contracts/artifacts/contracts/auth/AccountControl.sol/AccountControl.json",
-            "address": "0x0000000000000000000000000000000000008888"
-        },
-        "roleControl": {
-            "specPath": "smart_contracts/artifacts/contracts/auth/RoleControl.sol/RoleControl.json",
-            "address": "0x0000000000000000000000000000000000006666"
-        },
-        "upgradeControl": {
-            "specPath": "smart_contracts/artifacts/contracts/upgrade/UpgradeControl.sol/UpgradeControl.json",
-            "address": "0x0000000000000000000000000000000000009999"
-        },
-        "ethereumDidRegistry": {
-            "specPath": "smart_contracts/artifacts/contracts/did/EthereumExtDidRegistry.sol/EthereumExtDidRegistry.json",
-            "address": "0x0000000000000000000000000000000000018888"
-        },
-        "indyDidRegistry": {
-            "specPath": "smart_contracts/artifacts/contracts/did/IndyDidRegistry.sol/IndyDidRegistry.json",
-            "address": "0x0000000000000000000000000000000000003333"
-        },
-        "schemaRegistry": {
-            "specPath": "smart_contracts/artifacts/contracts/anoncreds/SchemaRegistry.sol/SchemaRegistry.json",
-            "address": "0x0000000000000000000000000000000000005555"
-        },
-        "credDefRegistry": {
-            "specPath": "smart_contracts/artifacts/contracts/anoncreds/CredentialDefinitionRegistry.sol/CredentialDefinitionRegistry.json",
-            "address": "0x0000000000000000000000000000000000004444"
-        },
-        "legacyMappingRegistry": {
-            "specPath": "smart_contracts/artifacts/contracts/migration/LegacyMappingRegistry.sol/LegacyMappingRegistry.json",
-            "address": "0x0000000000000000000000000000000000017777"
-        },
-        "universalDidResolver": {
-            "specPath": "smart_contracts/artifacts/contracts/migration/UniversalDidResolver.sol/UniversalDidResolver.json",
-            "address": "0x000000000000000000000000000000000019999"
-        }
+  "chainId": 1337,
+  "nodeAddress": "http://127.0.0.1:8545",
+  "contracts": {
+    "validatorControl": {
+      "specPath": "smart_contracts/artifacts/contracts/network/ValidatorControl.sol/ValidatorControl.json",
+      "address": "0x0000000000000000000000000000000000007777"
+    },
+    "accountControl": {
+      "specPath": "smart_contracts/artifacts/contracts/auth/AccountControl.sol/AccountControl.json",
+      "address": "0x0000000000000000000000000000000000008888"
+    },
+    "roleControl": {
+      "specPath": "smart_contracts/artifacts/contracts/auth/RoleControl.sol/RoleControl.json",
+      "address": "0x0000000000000000000000000000000000006666"
+    },
+    "upgradeControl": {
+      "specPath": "smart_contracts/artifacts/contracts/upgrade/UpgradeControl.sol/UpgradeControl.json",
+      "address": "0x0000000000000000000000000000000000009999"
+    },
+    "ethereumDidRegistry": {
+      "specPath": "smart_contracts/artifacts/contracts/did/EthereumExtDidRegistry.sol/EthereumExtDidRegistry.json",
+      "address": "0x0000000000000000000000000000000000018888"
+    },
+    "indyDidRegistry": {
+      "specPath": "smart_contracts/artifacts/contracts/did/IndyDidRegistry.sol/IndyDidRegistry.json",
+      "address": "0x0000000000000000000000000000000000003333"
+    },
+    "schemaRegistry": {
+      "specPath": "smart_contracts/artifacts/contracts/anoncreds/SchemaRegistry.sol/SchemaRegistry.json",
+      "address": "0x0000000000000000000000000000000000005555"
+    },
+    "credDefRegistry": {
+      "specPath": "smart_contracts/artifacts/contracts/anoncreds/CredentialDefinitionRegistry.sol/CredentialDefinitionRegistry.json",
+      "address": "0x0000000000000000000000000000000000004444"
+    },
+    "legacyMappingRegistry": {
+      "specPath": "smart_contracts/artifacts/contracts/migration/LegacyMappingRegistry.sol/LegacyMappingRegistry.json",
+      "address": "0x0000000000000000000000000000000000017777"
+    },
+    "universalDidResolver": {
+      "specPath": "smart_contracts/artifacts/contracts/migration/UniversalDidResolver.sol/UniversalDidResolver.json",
+      "address": "0x000000000000000000000000000000000019999"
+    },
+    "revocationRegistry": {
+      "specPath": "smart_contracts/artifacts/contracts/anoncreds/RevocationRegistry.sol/RevocationRegistry.json",
+      "address": "0x0000000000000000000000000000000000002222"
     }
+  }
 }

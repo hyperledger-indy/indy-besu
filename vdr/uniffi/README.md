@@ -4,7 +4,7 @@
 
 ### Requirements
 
-* Rust of version 1.70.0 or higher.
+* Rust of version 1.79.0 or higher.
 
 ### Build
 

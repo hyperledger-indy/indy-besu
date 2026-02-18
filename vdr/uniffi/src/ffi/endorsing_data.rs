@@ -76,7 +76,11 @@ impl From<TransactionEndorsingData_> for TransactionEndorsingData {
             contract: data.contract.to_string(),
             method: data.method.to_string(),
             endorsing_method: data.endorsing_method.to_string(),
-            params: data.params.into_iter().map(|param| json!(param)).collect(),
+            params: data
+                .params
+                .into_iter()
+                .map(|param| JsonValue::from(json!(param)))
+                .collect(),
             signature: data.signature.as_ref().map(|data| data.into()),
         }
     }
@@ -94,7 +98,7 @@ impl From<&TransactionEndorsingData> for TransactionEndorsingData_ {
             params: data
                 .params
                 .iter()
-                .flat_map(|param| serde_json::from_value(param.to_owned()))
+                .flat_map(|param| serde_json::from_value(param.to_owned().into_inner()))
                 .collect(),
             signature: data.signature.as_ref().map(|signature| SignatureData_ {
                 recovery_id: signature.recovery_id.clone(),

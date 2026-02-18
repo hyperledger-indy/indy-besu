@@ -4,8 +4,8 @@ node_modules
 logs
 .localnet.lock
 .idea
-vdr/out
-vdr/target
+vdr/**/out
+vdr/**/target
 network/config/nodes/validator5/key
 
 # Blockscout

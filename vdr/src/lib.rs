@@ -22,12 +22,23 @@ mod test;
 pub use client::{Client, Contract, LedgerClient};
 pub use contracts::{
     anoncreds::{
-        credential_definition_registry, schema_registry,
+        credential_definition_registry, revocation_registry, schema_registry,
         types::{
             credential_definition::{
                 CredentialDefinition, CredentialDefinitionRecord, SignatureType,
             },
             credential_definition_id::CredentialDefinitionId,
+            revocation_registry_definition::{
+                AccumKey, PublicKeys, RegistryType, RevocationRegistryDefinition,
+                RevocationRegistryDefinitionRecord, RevocationRegistryDefinitionValue,
+            },
+            revocation_registry_definition_id::RevocationRegistryDefinitionId,
+            revocation_registry_delta::{
+                RevocationRegistryDelta, RevocationState, RevocationStatusList,
+            },
+            revocation_registry_entry::{
+                Accumulator, RevocationRegistryEntry, RevocationRegistryEntryData,
+            },
             schema::{Schema, SchemaRecord},
             schema_id::SchemaId,
         },
