@@ -14,7 +14,6 @@ The scripts consist of the following steps:
 ### Requirements
 
 * [Genesis transactions](./indy-genesis.txn) of a running Indy ledger
-* [Node and contracts](./besu-config.json) of a running Indy-Besu ledger
 
 ### Run
 
