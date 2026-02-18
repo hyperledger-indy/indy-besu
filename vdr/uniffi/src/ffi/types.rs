@@ -95,7 +95,7 @@ impl Into<ContractSpec_> for ContractSpec {
     fn into(self) -> ContractSpec_ {
         ContractSpec_ {
             name: self.name,
-            abi: self.abi,
+            abi: self.abi.into_inner(),
         }
     }
 }

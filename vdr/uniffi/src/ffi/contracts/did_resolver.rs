@@ -19,7 +19,7 @@ pub async fn resolve_did(
     };
     let did_with_meta =
         did_resolver::resolve_did(&client.client, &DID::from(did), options.as_ref()).await?;
-    Ok(json!(did_with_meta))
+    Ok(JsonValue::from(json!(did_with_meta)))
 }
 
 #[derive(uniffi::Record)]

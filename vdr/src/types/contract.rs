@@ -156,6 +156,24 @@ impl ContractOutput {
             .collect())
     }
 
+    pub fn get_uint32_array(&self, index: usize) -> VdrResult<Vec<u32>> {
+        let items = self.get_item(index)?.into_array().ok_or_else(|| {
+            VdrError::ContractInvalidResponseData("Missing uint32 array value".to_string())
+        })?;
+
+        items
+            .into_iter()
+            .map(|token| {
+                token
+                    .into_uint()
+                    .ok_or_else(|| {
+                        VdrError::ContractInvalidResponseData("Missing uint value".to_string())
+                    })
+                    .map(|value| value.as_u32())
+            })
+            .collect::<VdrResult<Vec<u32>>>()
+    }
+
     fn get_item(&self, index: usize) -> VdrResult<ContractParam> {
         self.0.get(index).cloned().ok_or_else(|| {
             VdrError::ContractInvalidResponseData("Missing address value".to_string())
@@ -205,6 +223,13 @@ impl ContractEvent {
                 VdrError::ContractInvalidResponseData("Missing address value".to_string())
             })
             .map(|uint| uint.as_u64())
+    }
+
+    pub fn get_tuple(&self, index: usize) -> VdrResult<ContractOutput> {
+        self.get_item(index)?
+            .into_tuple()
+            .ok_or_else(|| VdrError::ContractInvalidResponseData("Missing tuple value".to_string()))
+            .map(ContractOutput)
     }
 
     fn get_item(&self, index: usize) -> VdrResult<ContractParam> {

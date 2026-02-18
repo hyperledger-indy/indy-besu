@@ -68,6 +68,15 @@ pub enum VdrError {
 
     #[error("Invalid DID document: {}", msg)]
     InvalidDidDocument { msg: String },
+
+    #[error("Invalid Revocation Registry Definition: {}", msg)]
+    InvalidRevocationRegistryDefinition { msg: String },
+
+    #[error("Invalid Revocation Registry Entry: {}", msg)]
+    InvalidRevocationRegistryEntry { msg: String },
+
+    #[error("Invalid Revocation Registry Status List: {}", msg)]
+    InvalidRevocationRegistryStatusList { msg: String },
 }
 
 pub type VdrResult<T> = Result<T, VdrError>;
@@ -103,8 +112,15 @@ impl From<VdrError_> for VdrError {
             VdrError_::InvalidCredentialDefinition(msg) => {
                 VdrError::InvalidCredentialDefinition { msg }
             }
-            VdrError_::InvalidDidDocument(msg) => {
-                VdrError::InvalidDidDocument { msg }
+            VdrError_::InvalidDidDocument(msg) => VdrError::InvalidDidDocument { msg },
+            VdrError_::InvalidRevocationRegistryDefinition(msg) => {
+                VdrError::InvalidRevocationRegistryDefinition { msg }
+            }
+            VdrError_::InvalidRevocationRegistryEntry(msg) => {
+                VdrError::InvalidRevocationRegistryEntry { msg }
+            }
+            VdrError_::InvalidRevocationRegistryStatusList(msg) => {
+                VdrError::InvalidRevocationRegistryStatusList { msg }
             }
         }
     }

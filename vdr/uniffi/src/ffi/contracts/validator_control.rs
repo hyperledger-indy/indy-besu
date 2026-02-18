@@ -56,5 +56,5 @@ pub async fn build_get_validators_transaction(client: &LedgerClient) -> VdrResul
 #[uniffi::export]
 pub fn parse_get_validators_result(client: &LedgerClient, bytes: Vec<u8>) -> VdrResult<JsonValue> {
     let validators = validator_control::parse_get_validators_result(&client.client, &bytes)?;
-    Ok(json!(validators))
+    Ok(JsonValue::from(json!(validators)))
 }

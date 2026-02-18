@@ -367,6 +367,7 @@ pub mod test {
         pub account_control: TestContractConfig,
         pub upgrade_control: TestContractConfig,
         pub legacy_mapping_registry: TestContractConfig,
+        pub revocation_registry: TestContractConfig,
     }
 
     #[derive(Serialize, Deserialize)]
@@ -462,6 +463,13 @@ pub mod test {
                 )),
                 spec: None,
             },
+            ContractConfig {
+                address: CONFIG.contracts.revocation_registry.address.to_string(),
+                spec_path: Some(build_contract_path(
+                    CONFIG.contracts.revocation_registry.spec_path.as_str(),
+                )),
+                spec: None,
+            },
         ]
     }
 
@@ -500,7 +508,7 @@ pub mod test {
             &CONFIG.node_address,
             &contracts(),
             Some(TEST_NETWORK),
-            Some(&QuorumConfig::default()),
+            None,
         )
         .unwrap();
 

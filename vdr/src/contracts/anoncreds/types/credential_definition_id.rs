@@ -13,7 +13,7 @@ use sha3::Digest;
 pub struct CredentialDefinitionId(String);
 
 impl CredentialDefinitionId {
-    const ID_PATH: &'static str = "anoncreds/v0/CLAIM_DEF";
+    pub const ID_PATH: &'static str = "anoncreds/v0/CLAIM_DEF";
 
     pub fn build(issuer_id: &DID, schema_id: &str, tag: &str) -> CredentialDefinitionId {
         CredentialDefinitionId::from(
