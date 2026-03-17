@@ -50,7 +50,7 @@ pub struct SignatureData {
     pub signature: Vec<u8>,
 }
 
-#[derive(uniffi::Record)]
+#[derive(Clone, uniffi::Record)]
 pub struct QuorumConfig {
     pub nodes: Vec<String>,
     pub request_retries: Option<u8>,

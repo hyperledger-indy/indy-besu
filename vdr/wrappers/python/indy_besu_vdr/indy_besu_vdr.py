@@ -641,13 +641,25 @@ def _uniffi_check_api_checksums(lib):
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     if lib.uniffi_indy_besu_vdr_uniffi_checksum_method_ledgerclient_get_receipt() != 45161:
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_indy_besu_vdr_uniffi_checksum_method_ledgerclient_network() != 62288:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     if lib.uniffi_indy_besu_vdr_uniffi_checksum_method_ledgerclient_ping() != 64834:
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     if lib.uniffi_indy_besu_vdr_uniffi_checksum_method_ledgerclient_query_events() != 62382:
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     if lib.uniffi_indy_besu_vdr_uniffi_checksum_method_ledgerclient_submit_transaction() != 11699:
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_indy_besu_vdr_uniffi_checksum_method_ledgerrouter_get_ledger_for_identifier() != 55866:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_indy_besu_vdr_uniffi_checksum_method_ledgerrouter_list_networks() != 2311:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_indy_besu_vdr_uniffi_checksum_method_ledgerrouter_ping_all() != 16710:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_indy_besu_vdr_uniffi_checksum_method_ledgerrouter_submit_transaction_for_identifier() != 21272:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     if lib.uniffi_indy_besu_vdr_uniffi_checksum_constructor_ledgerclient_new() != 30339:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_indy_besu_vdr_uniffi_checksum_constructor_ledgerrouter_new() != 11999:
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
 
 # A ctypes library to expose the extern-C FFI definitions.
@@ -779,6 +791,11 @@ _UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_method_ledgerclient_get_receipt.argtyp
     _UniffiRustBuffer,
 )
 _UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_method_ledgerclient_get_receipt.restype = ctypes.c_uint64
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_method_ledgerclient_network.argtypes = (
+    ctypes.c_void_p,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_method_ledgerclient_network.restype = _UniffiRustBuffer
 _UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_method_ledgerclient_ping.argtypes = (
     ctypes.c_void_p,
 )
@@ -793,6 +810,42 @@ _UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_method_ledgerclient_submit_transaction
     _UniffiRustBuffer,
 )
 _UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_method_ledgerclient_submit_transaction.restype = ctypes.c_uint64
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_clone_ledgerrouter.argtypes = (
+    ctypes.c_void_p,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_clone_ledgerrouter.restype = ctypes.c_void_p
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_free_ledgerrouter.argtypes = (
+    ctypes.c_void_p,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_free_ledgerrouter.restype = None
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_constructor_ledgerrouter_new.argtypes = (
+    _UniffiRustBuffer,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_constructor_ledgerrouter_new.restype = ctypes.c_void_p
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_method_ledgerrouter_get_ledger_for_identifier.argtypes = (
+    ctypes.c_void_p,
+    _UniffiRustBuffer,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_method_ledgerrouter_get_ledger_for_identifier.restype = ctypes.c_void_p
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_method_ledgerrouter_list_networks.argtypes = (
+    ctypes.c_void_p,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_method_ledgerrouter_list_networks.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_method_ledgerrouter_ping_all.argtypes = (
+    ctypes.c_void_p,
+)
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_method_ledgerrouter_ping_all.restype = ctypes.c_uint64
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_method_ledgerrouter_submit_transaction_for_identifier.argtypes = (
+    ctypes.c_void_p,
+    _UniffiRustBuffer,
+    _UniffiRustBuffer,
+)
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_method_ledgerrouter_submit_transaction_for_identifier.restype = ctypes.c_uint64
 _UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_func_build_add_validator_transaction.argtypes = (
     ctypes.c_void_p,
     _UniffiRustBuffer,
@@ -1866,6 +1919,9 @@ _UniffiLib.uniffi_indy_besu_vdr_uniffi_checksum_func_transaction_to_string.resty
 _UniffiLib.uniffi_indy_besu_vdr_uniffi_checksum_method_ledgerclient_get_receipt.argtypes = (
 )
 _UniffiLib.uniffi_indy_besu_vdr_uniffi_checksum_method_ledgerclient_get_receipt.restype = ctypes.c_uint16
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_checksum_method_ledgerclient_network.argtypes = (
+)
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_checksum_method_ledgerclient_network.restype = ctypes.c_uint16
 _UniffiLib.uniffi_indy_besu_vdr_uniffi_checksum_method_ledgerclient_ping.argtypes = (
 )
 _UniffiLib.uniffi_indy_besu_vdr_uniffi_checksum_method_ledgerclient_ping.restype = ctypes.c_uint16
@@ -1875,9 +1931,24 @@ _UniffiLib.uniffi_indy_besu_vdr_uniffi_checksum_method_ledgerclient_query_events
 _UniffiLib.uniffi_indy_besu_vdr_uniffi_checksum_method_ledgerclient_submit_transaction.argtypes = (
 )
 _UniffiLib.uniffi_indy_besu_vdr_uniffi_checksum_method_ledgerclient_submit_transaction.restype = ctypes.c_uint16
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_checksum_method_ledgerrouter_get_ledger_for_identifier.argtypes = (
+)
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_checksum_method_ledgerrouter_get_ledger_for_identifier.restype = ctypes.c_uint16
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_checksum_method_ledgerrouter_list_networks.argtypes = (
+)
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_checksum_method_ledgerrouter_list_networks.restype = ctypes.c_uint16
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_checksum_method_ledgerrouter_ping_all.argtypes = (
+)
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_checksum_method_ledgerrouter_ping_all.restype = ctypes.c_uint16
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_checksum_method_ledgerrouter_submit_transaction_for_identifier.argtypes = (
+)
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_checksum_method_ledgerrouter_submit_transaction_for_identifier.restype = ctypes.c_uint16
 _UniffiLib.uniffi_indy_besu_vdr_uniffi_checksum_constructor_ledgerclient_new.argtypes = (
 )
 _UniffiLib.uniffi_indy_besu_vdr_uniffi_checksum_constructor_ledgerclient_new.restype = ctypes.c_uint16
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_checksum_constructor_ledgerrouter_new.argtypes = (
+)
+_UniffiLib.uniffi_indy_besu_vdr_uniffi_checksum_constructor_ledgerrouter_new.restype = ctypes.c_uint16
 _UniffiLib.ffi_indy_besu_vdr_uniffi_uniffi_contract_version.argtypes = (
 )
 _UniffiLib.ffi_indy_besu_vdr_uniffi_uniffi_contract_version.restype = ctypes.c_uint32
@@ -1999,6 +2070,8 @@ class _UniffiConverterBytes(_UniffiConverterRustBuffer):
     def write(value, buf):
         buf.write_i32(len(value))
         buf.write(value)
+
+
 
 
 
@@ -2430,6 +2503,87 @@ class _UniffiConverterTypeEventQuery(_UniffiConverterRustBuffer):
         _UniffiConverterOptionalUInt64.write(value.to_block, buf)
         _UniffiConverterOptionalString.write(value.event_signature, buf)
         _UniffiConverterOptionalString.write(value.event_filter, buf)
+
+
+class LedgerConfiguration:
+    """
+    Represents the configuration for a single ledger network.
+    """
+
+    chain_id: "int"
+    """
+    The EVM chain ID of the target network.
+    """
+
+    node_address: "str"
+    """
+    The RPC endpoint or node address of the ledger.
+    """
+
+    contract_configs: "typing.List[ContractConfig]"
+    """
+    List of contract configurations deployed in this ledger.
+    """
+
+    network: "typing.Optional[str]"
+    """
+    Optional network name (e.g., "mainnet", "testnet").
+    """
+
+    quorum_config: "typing.Optional[QuorumConfig]"
+    """
+    Optional quorum configuration, if applicable.
+    """
+
+    def __init__(self, *, chain_id: "int", node_address: "str", contract_configs: "typing.List[ContractConfig]", network: "typing.Optional[str]", quorum_config: "typing.Optional[QuorumConfig]"):
+        self.chain_id = chain_id
+        self.node_address = node_address
+        self.contract_configs = contract_configs
+        self.network = network
+        self.quorum_config = quorum_config
+
+    def __str__(self):
+        return "LedgerConfiguration(chain_id={}, node_address={}, contract_configs={}, network={}, quorum_config={})".format(self.chain_id, self.node_address, self.contract_configs, self.network, self.quorum_config)
+
+    def __eq__(self, other):
+        if self.chain_id != other.chain_id:
+            return False
+        if self.node_address != other.node_address:
+            return False
+        if self.contract_configs != other.contract_configs:
+            return False
+        if self.network != other.network:
+            return False
+        if self.quorum_config != other.quorum_config:
+            return False
+        return True
+
+class _UniffiConverterTypeLedgerConfiguration(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return LedgerConfiguration(
+            chain_id=_UniffiConverterUInt64.read(buf),
+            node_address=_UniffiConverterString.read(buf),
+            contract_configs=_UniffiConverterSequenceTypeContractConfig.read(buf),
+            network=_UniffiConverterOptionalString.read(buf),
+            quorum_config=_UniffiConverterOptionalTypeQuorumConfig.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiConverterUInt64.check_lower(value.chain_id)
+        _UniffiConverterString.check_lower(value.node_address)
+        _UniffiConverterSequenceTypeContractConfig.check_lower(value.contract_configs)
+        _UniffiConverterOptionalString.check_lower(value.network)
+        _UniffiConverterOptionalTypeQuorumConfig.check_lower(value.quorum_config)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiConverterUInt64.write(value.chain_id, buf)
+        _UniffiConverterString.write(value.node_address, buf)
+        _UniffiConverterSequenceTypeContractConfig.write(value.contract_configs, buf)
+        _UniffiConverterOptionalString.write(value.network, buf)
+        _UniffiConverterOptionalTypeQuorumConfig.write(value.quorum_config, buf)
 
 
 class PingStatus:
@@ -4012,6 +4166,31 @@ class _UniffiConverterSequenceTypeEventLog(_UniffiConverterRustBuffer):
 
 
 
+class _UniffiConverterSequenceTypeLedgerConfiguration(_UniffiConverterRustBuffer):
+    @classmethod
+    def check_lower(cls, value):
+        for item in value:
+            _UniffiConverterTypeLedgerConfiguration.check_lower(item)
+
+    @classmethod
+    def write(cls, value, buf):
+        items = len(value)
+        buf.write_i32(items)
+        for item in value:
+            _UniffiConverterTypeLedgerConfiguration.write(item, buf)
+
+    @classmethod
+    def read(cls, buf):
+        count = buf.read_i32()
+        if count < 0:
+            raise InternalError("Unexpected negative sequence length")
+
+        return [
+            _UniffiConverterTypeLedgerConfiguration.read(buf) for i in range(count)
+        ]
+
+
+
 class _UniffiConverterSequenceTypeJsonValue(_UniffiConverterRustBuffer):
     @classmethod
     def check_lower(cls, value):
@@ -4034,6 +4213,39 @@ class _UniffiConverterSequenceTypeJsonValue(_UniffiConverterRustBuffer):
         return [
             _UniffiConverterTypeJsonValue.read(buf) for i in range(count)
         ]
+
+
+
+class _UniffiConverterMapStringTypePingStatus(_UniffiConverterRustBuffer):
+    @classmethod
+    def check_lower(cls, items):
+        for (key, value) in items.items():
+            _UniffiConverterString.check_lower(key)
+            _UniffiConverterTypePingStatus.check_lower(value)
+
+    @classmethod
+    def write(cls, items, buf):
+        buf.write_i32(len(items))
+        for (key, value) in items.items():
+            _UniffiConverterString.write(key, buf)
+            _UniffiConverterTypePingStatus.write(value, buf)
+
+    @classmethod
+    def read(cls, buf):
+        count = buf.read_i32()
+        if count < 0:
+            raise InternalError("Unexpected negative map size")
+
+        # It would be nice to use a dict comprehension,
+        # but in Python 3.7 and before the evaluation order is not according to spec,
+        # so we we're reading the value before the key.
+        # This loop makes the order explicit: first reading the key, then the value.
+        d = {}
+        for i in range(count):
+            key = _UniffiConverterString.read(buf)
+            val = _UniffiConverterTypePingStatus.read(buf)
+            d[key] = val
+        return d
 
 
 class _UniffiConverterTypeJsonValue:
@@ -4060,6 +4272,8 @@ class _UniffiConverterTypeJsonValue:
 # objects.
 class LedgerClientProtocol(typing.Protocol):
     def get_receipt(self, hash: "bytes"):
+        raise NotImplementedError
+    def network(self, ):
         raise NotImplementedError
     def ping(self, ):
         raise NotImplementedError
@@ -4124,6 +4338,15 @@ class LedgerClient():
 _UniffiConverterTypeVdrError,
 
         )
+
+
+
+
+    def network(self, ) -> "str":
+        return _UniffiConverterString.lift(
+            _uniffi_rust_call_with_error(_UniffiConverterTypeVdrError,_UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_method_ledgerclient_network,self._uniffi_clone_pointer(),)
+        )
+
 
 
 
@@ -4215,6 +4438,275 @@ class _UniffiConverterTypeLedgerClient:
 
     @classmethod
     def write(cls, value: LedgerClientProtocol, buf: _UniffiRustBuffer):
+        buf.write_u64(cls.lower(value))
+class LedgerRouterProtocol(typing.Protocol):
+    """
+    A wrapper around the internal `LedgerRouter` exposed through UniFFI for use in Python, Swift, etc.
+    """
+
+    def get_ledger_for_identifier(self, identifier: "str"):
+        """
+        Retrieves a `LedgerClient` instance for a specific identifier (e.g., DID).
+
+        # Parameters
+        - `identifier`: A DID or address that encodes the network name (e.g., `did:ethr:testnet:0x123`).
+
+        # Returns
+        A [`LedgerClient`] ready for transactions and queries.
+
+        # Errors
+        Returns [`VdrError::ClientInvalidResponse`] if the configuration mode is used instead of client mode.
+        """
+
+        raise NotImplementedError
+    def list_networks(self, ):
+        """
+        Lists all configured network names in this router instance.
+
+        # Returns
+        A vector of network identifiers such as `["mainnet", "testnet"]`.
+
+        # Example
+        ```python
+        networks = router.list_networks()
+        print(networks)
+        ```
+        """
+
+        raise NotImplementedError
+    def ping_all(self, ):
+        """
+        Pings all configured ledgers and returns their current status.
+
+        # Returns
+        A HashMap mapping network names to their [`PingStatus`] results.
+
+        # Example
+        ```python
+        status = await router.ping_all()
+        print(status["testnet"].status)
+        ```
+        """
+
+        raise NotImplementedError
+    def submit_transaction_for_identifier(self, identifier: "str",transaction: "Transaction"):
+        """
+        Submits a transaction to the ledger corresponding to a given identifier.
+
+        # Parameters
+        - `identifier`: The target ledger identifier (e.g., DID or address).
+        - `transaction`: The transaction object to be submitted.
+
+        # Returns
+        A raw Vec<u8> representing the transaction result or receipt.
+
+        # Example
+        ```python
+        result = await router.submit_transaction_for_identifier("did:ethr:testnet:0x123", tx)
+        ```
+        """
+
+        raise NotImplementedError
+# LedgerRouter is a Rust-only trait - it's a wrapper around a Rust implementation.
+class LedgerRouter():
+    """
+    A wrapper around the internal `LedgerRouter` exposed through UniFFI for use in Python, Swift, etc.
+    """
+
+    _pointer: ctypes.c_void_p
+    def __init__(self, configs: "typing.List[LedgerConfiguration]"):
+        """
+        Creates a new LedgerRouter instance from a list of LedgerConfiguration records.
+
+        # Parameters
+        - `configs`: A vector of [`LedgerConfiguration`] representing network configurations.
+
+        # Returns
+        A [`LedgerRouter`] instance ready to interact with multiple ledgers.
+
+        # Example
+        ```python
+        router = LedgerRouter.new([
+        LedgerConfiguration(
+        chain_id=1337,
+        node_address="http://localhost:8545",
+        contract_configs=[],
+        network="testnet",
+        quorum_config=None
+        )
+        ])
+        ```
+        """
+
+        _UniffiConverterSequenceTypeLedgerConfiguration.check_lower(configs)
+        
+        self._pointer = _uniffi_rust_call_with_error(_UniffiConverterTypeVdrError,_UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_constructor_ledgerrouter_new,
+        _UniffiConverterSequenceTypeLedgerConfiguration.lower(configs))
+
+    def __del__(self):
+        # In case of partial initialization of instances.
+        pointer = getattr(self, "_pointer", None)
+        if pointer is not None:
+            _uniffi_rust_call(_UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_free_ledgerrouter, pointer)
+
+    def _uniffi_clone_pointer(self):
+        return _uniffi_rust_call(_UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_clone_ledgerrouter, self._pointer)
+
+    # Used by alternative constructors or any methods which return this type.
+    @classmethod
+    def _make_instance_(cls, pointer):
+        # Lightly yucky way to bypass the usual __init__ logic
+        # and just create a new instance with the required pointer.
+        inst = cls.__new__(cls)
+        inst._pointer = pointer
+        return inst
+
+
+    def get_ledger_for_identifier(self, identifier: "str") -> "LedgerClient":
+        """
+        Retrieves a `LedgerClient` instance for a specific identifier (e.g., DID).
+
+        # Parameters
+        - `identifier`: A DID or address that encodes the network name (e.g., `did:ethr:testnet:0x123`).
+
+        # Returns
+        A [`LedgerClient`] ready for transactions and queries.
+
+        # Errors
+        Returns [`VdrError::ClientInvalidResponse`] if the configuration mode is used instead of client mode.
+        """
+
+        _UniffiConverterString.check_lower(identifier)
+        
+        return _UniffiConverterTypeLedgerClient.lift(
+            _uniffi_rust_call_with_error(_UniffiConverterTypeVdrError,_UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_method_ledgerrouter_get_ledger_for_identifier,self._uniffi_clone_pointer(),
+        _UniffiConverterString.lower(identifier))
+        )
+
+
+
+
+
+    def list_networks(self, ) -> "typing.List[str]":
+        """
+        Lists all configured network names in this router instance.
+
+        # Returns
+        A vector of network identifiers such as `["mainnet", "testnet"]`.
+
+        # Example
+        ```python
+        networks = router.list_networks()
+        print(networks)
+        ```
+        """
+
+        return _UniffiConverterSequenceString.lift(
+            _uniffi_rust_call(_UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_method_ledgerrouter_list_networks,self._uniffi_clone_pointer(),)
+        )
+
+
+
+
+    async def ping_all(self, ) -> "dict[str, PingStatus]":
+        """
+        Pings all configured ledgers and returns their current status.
+
+        # Returns
+        A HashMap mapping network names to their [`PingStatus`] results.
+
+        # Example
+        ```python
+        status = await router.ping_all()
+        print(status["testnet"].status)
+        ```
+        """
+
+        return await _uniffi_rust_call_async(
+            _UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_method_ledgerrouter_ping_all(
+                self._uniffi_clone_pointer(), 
+            ),
+            _UniffiLib.ffi_indy_besu_vdr_uniffi_rust_future_poll_rust_buffer,
+            _UniffiLib.ffi_indy_besu_vdr_uniffi_rust_future_complete_rust_buffer,
+            _UniffiLib.ffi_indy_besu_vdr_uniffi_rust_future_free_rust_buffer,
+            # lift function
+            _UniffiConverterMapStringTypePingStatus.lift,
+            
+    # Error FFI converter
+_UniffiConverterTypeVdrError,
+
+        )
+
+
+
+    async def submit_transaction_for_identifier(self, identifier: "str",transaction: "Transaction") -> "bytes":
+        """
+        Submits a transaction to the ledger corresponding to a given identifier.
+
+        # Parameters
+        - `identifier`: The target ledger identifier (e.g., DID or address).
+        - `transaction`: The transaction object to be submitted.
+
+        # Returns
+        A raw Vec<u8> representing the transaction result or receipt.
+
+        # Example
+        ```python
+        result = await router.submit_transaction_for_identifier("did:ethr:testnet:0x123", tx)
+        ```
+        """
+
+        _UniffiConverterString.check_lower(identifier)
+        
+        _UniffiConverterTypeTransaction.check_lower(transaction)
+        
+        return await _uniffi_rust_call_async(
+            _UniffiLib.uniffi_indy_besu_vdr_uniffi_fn_method_ledgerrouter_submit_transaction_for_identifier(
+                self._uniffi_clone_pointer(), 
+        _UniffiConverterString.lower(identifier),
+        _UniffiConverterTypeTransaction.lower(transaction)
+            ),
+            _UniffiLib.ffi_indy_besu_vdr_uniffi_rust_future_poll_rust_buffer,
+            _UniffiLib.ffi_indy_besu_vdr_uniffi_rust_future_complete_rust_buffer,
+            _UniffiLib.ffi_indy_besu_vdr_uniffi_rust_future_free_rust_buffer,
+            # lift function
+            _UniffiConverterBytes.lift,
+            
+    # Error FFI converter
+_UniffiConverterTypeVdrError,
+
+        )
+
+
+
+
+
+class _UniffiConverterTypeLedgerRouter:
+
+    @staticmethod
+    def lift(value: int):
+        return LedgerRouter._make_instance_(value)
+
+    @staticmethod
+    def check_lower(value: LedgerRouter):
+        if not isinstance(value, LedgerRouter):
+            raise TypeError("Expected LedgerRouter instance, {} found".format(type(value).__name__))
+
+    @staticmethod
+    def lower(value: LedgerRouterProtocol):
+        if not isinstance(value, LedgerRouter):
+            raise TypeError("Expected LedgerRouter instance, {} found".format(type(value).__name__))
+        return value._uniffi_clone_pointer()
+
+    @classmethod
+    def read(cls, buf: _UniffiRustBuffer):
+        ptr = buf.read_u64()
+        if ptr == 0:
+            raise InternalError("Raw pointer value was null")
+        return cls.lift(ptr)
+
+    @classmethod
+    def write(cls, value: LedgerRouterProtocol, buf: _UniffiRustBuffer):
         buf.write_u64(cls.lower(value))
 JsonValue = str
 
@@ -5866,6 +6358,7 @@ __all__ = [
     "DidResolutionOptions",
     "EventLog",
     "EventQuery",
+    "LedgerConfiguration",
     "PingStatus",
     "QuorumConfig",
     "RevocationRegistryDefinition",
@@ -5965,5 +6458,6 @@ __all__ = [
     "transaction_get_signing_bytes",
     "transaction_to_string",
     "LedgerClient",
+    "LedgerRouter",
 ]
 

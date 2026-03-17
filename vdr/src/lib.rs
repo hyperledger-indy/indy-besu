@@ -19,7 +19,9 @@ pub mod migration;
 #[cfg(test)]
 mod test;
 
-pub use client::{Client, Contract, LedgerClient};
+pub use client::{
+    Client, Contract, LedgerClient, LedgerClientConfig, LedgerMode, LedgerResult, LedgerRouter,
+};
 pub use contracts::{
     anoncreds::{
         credential_definition_registry, revocation_registry, schema_registry,

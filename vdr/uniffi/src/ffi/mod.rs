@@ -7,6 +7,7 @@ pub mod contracts;
 pub mod endorsing_data;
 pub mod error;
 pub mod event_query;
+pub mod ledger_router;
 pub mod transaction;
 pub mod types;
 
@@ -15,5 +16,6 @@ pub use contracts::*;
 pub use endorsing_data::*;
 pub use error::*;
 pub use event_query::*;
+pub use ledger_router::*;
 pub use transaction::*;
 pub use types::*;

@@ -240,8 +240,8 @@ class Schema(indy_besu_vdr.indy_besu_vdr.Schema):
 
 class SchemaRegistry:
     @staticmethod
-    async def build_create_schema_transaction(client: LedgerClient, _from: str, schema: dict) -> "Transaction":
-        return Transaction.init(await build_create_schema_transaction(client, _from, json.dumps(schema)))
+    async def build_create_schema_transaction(client: LedgerClient, _from: str, schema: Schema) -> "Transaction":
+        return Transaction.init(await build_create_schema_transaction(client, _from, schema))
 
     @staticmethod
     async def build_create_schema_endorsing_data(client: LedgerClient, schema: Schema) -> "TransactionEndorsingData":

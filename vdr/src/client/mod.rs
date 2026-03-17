@@ -7,9 +7,12 @@ pub mod constants;
 pub mod implementation;
 pub mod quorum;
 
+pub mod ledger_router;
+
 use crate::{error::VdrResult, types::Address, BlockDetails, Transaction};
 use async_trait::async_trait;
 use ethabi::{AbiError, Event, Function};
+pub use ledger_router::{LedgerClientConfig, LedgerMode, LedgerResult, LedgerRouter};
 use std::fmt::Debug;
 
 pub use client::LedgerClient;

@@ -12,7 +12,7 @@ readme = "./README.md"
 [lib]
 name = "indy_besu_vdr_uniffi"
 path = "src/lib.rs"
-crate-type = ["rlib", "cdylib"]
+crate-type = ["rlib", "cdylib", "staticlib"]
 
 [[bin]]
 name = "uniffi-bindgen"
@@ -44,13 +44,10 @@ async-compat = "0.2"
  
 
 [build-dependencies]
-#uniffi = { version = "0.26.1", features = [ "build"] }
 uniffi = { version = "0.29.5", features = [ "build" ] }
 
 [dev-dependencies]
-#uniffi = { version = "0.26.1", features = ["tokio", "cli"] }
 uniffi = { version = "0.29.5", features = ["tokio", "cli"] }
-#uniffi = { version = "0.29.4" }
 
 [patch.crates-io]
 web3 = { git = 'https://github.com/DSRCorporation/rust-web3.git'}

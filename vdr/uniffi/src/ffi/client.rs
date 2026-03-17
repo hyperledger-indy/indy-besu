@@ -68,4 +68,12 @@ impl LedgerClient {
     pub async fn get_receipt(&self, hash: Vec<u8>) -> VdrResult<String> {
         self.client.get_receipt(&hash).await.map_err(VdrError::from)
     }
+
+    pub fn network(&self) -> VdrResult<String> {
+        Ok(self
+            .client
+            .network()
+            .cloned()
+            .unwrap_or_else(|| "".to_string()))
+    }
 }
