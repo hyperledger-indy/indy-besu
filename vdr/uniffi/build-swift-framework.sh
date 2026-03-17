@@ -8,7 +8,7 @@ trap popd EXIT
 NAME="indy_besu_vdr"
 VERSION=${1:-"1.0"} # first arg or "1.0"
 BUNDLE_IDENTIFIER="org.hyperledger.$NAME"
-LIBRARY_NAME="lib${NAME}_uniffi.dylib"
+LIBRARY_NAME="lib${NAME}_uniffi.a"
 FRAMEWORK_LIBRARY_NAME=${NAME}FFI
 FRAMEWORK_NAME="$FRAMEWORK_LIBRARY_NAME.framework"
 XC_FRAMEWORK_NAME="$FRAMEWORK_LIBRARY_NAME.xcframework"

@@ -14,7 +14,7 @@ use log_derive::{logfn, logfn_inputs};
 use serde::{Deserialize, Serialize};
 
 /// Contract configuration
-#[derive(Debug, Default, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Default, PartialEq, Serialize, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct ContractConfig {
     /// Address of deployed contract
