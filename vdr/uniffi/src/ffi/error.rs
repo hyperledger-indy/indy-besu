@@ -77,6 +77,9 @@ pub enum VdrError {
 
     #[error("Invalid Revocation Registry Status List: {}", msg)]
     InvalidRevocationRegistryStatusList { msg: String },
+
+    #[error("Router configuration error: {}", msg)]
+    RouterConfigError { msg: String },
 }
 
 pub type VdrResult<T> = Result<T, VdrError>;
@@ -122,6 +125,7 @@ impl From<VdrError_> for VdrError {
             VdrError_::InvalidRevocationRegistryStatusList(msg) => {
                 VdrError::InvalidRevocationRegistryStatusList { msg }
             }
+            VdrError_::RouterConfigError(msg) => VdrError::RouterConfigError { msg },
         }
     }
 }

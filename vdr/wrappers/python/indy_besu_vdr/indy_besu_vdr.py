@@ -3578,6 +3578,16 @@ class VdrError:  # type: ignore
         def __repr__(self):
             return "VdrError.InvalidRevocationRegistryStatusList({})".format(str(self))
     _UniffiTempVdrError.InvalidRevocationRegistryStatusList = InvalidRevocationRegistryStatusList # type: ignore
+    class RouterConfigError(_UniffiTempVdrError):
+        def __init__(self, msg):
+            super().__init__(", ".join([
+                "msg={!r}".format(msg),
+            ]))
+            self.msg = msg
+
+        def __repr__(self):
+            return "VdrError.RouterConfigError({})".format(str(self))
+    _UniffiTempVdrError.RouterConfigError = RouterConfigError # type: ignore
 
 VdrError = _UniffiTempVdrError # type: ignore
 del _UniffiTempVdrError
@@ -3679,6 +3689,10 @@ class _UniffiConverterTypeVdrError(_UniffiConverterRustBuffer):
             return VdrError.InvalidRevocationRegistryStatusList(
                 _UniffiConverterString.read(buf),
             )
+        if variant == 25:
+            return VdrError.RouterConfigError(
+                _UniffiConverterString.read(buf),
+            )
         raise InternalError("Raw enum value doesn't match any cases")
 
     @staticmethod
@@ -3751,6 +3765,9 @@ class _UniffiConverterTypeVdrError(_UniffiConverterRustBuffer):
         if isinstance(value, VdrError.InvalidRevocationRegistryStatusList):
             _UniffiConverterString.check_lower(value.msg)
             return
+        if isinstance(value, VdrError.RouterConfigError):
+            _UniffiConverterString.check_lower(value.msg)
+            return
 
     @staticmethod
     def write(value, buf):
@@ -3821,6 +3838,9 @@ class _UniffiConverterTypeVdrError(_UniffiConverterRustBuffer):
             _UniffiConverterString.write(value.msg, buf)
         if isinstance(value, VdrError.InvalidRevocationRegistryStatusList):
             buf.write_i32(24)
+            _UniffiConverterString.write(value.msg, buf)
+        if isinstance(value, VdrError.RouterConfigError):
+            buf.write_i32(25)
             _UniffiConverterString.write(value.msg, buf)
 
 

@@ -17,6 +17,8 @@ use indy_besu_vdr::{
 
 use uniffi_macros::export;
 
+const DEFAULT_NETWORK: &str = "default";
+
 /// Represents the configuration for a single ledger network.
 #[derive(uniffi::Record)]
 pub struct LedgerConfiguration {
@@ -71,7 +73,7 @@ impl LedgerRouter {
                 .network
                 .as_ref()
                 .cloned()
-                .unwrap_or_else(|| "default".to_string());
+                .unwrap_or_else(|| DEFAULT_NETWORK.to_string());
 
             // Define the default network (first key or "default" if empty)
             if default_network_name.is_none() {

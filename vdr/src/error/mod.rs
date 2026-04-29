@@ -87,6 +87,9 @@ pub enum VdrError {
 
     #[error("Invalid revocation status list: {}", _0)]
     InvalidRevocationRegistryStatusList(String),
+
+    #[error("Configuration error: {}", _0)]
+    RouterConfigError(String),
 }
 
 pub type VdrResult<T> = Result<T, VdrError>;
