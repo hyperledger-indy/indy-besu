@@ -1,7 +1,4 @@
-use std::{
-    collections::HashMap,
-    sync::{Arc, Mutex},
-};
+use std::collections::HashMap;
 
 use crate::{
     client::LedgerClient,
@@ -10,8 +7,10 @@ use crate::{
     QuorumConfig,
 };
 
+const DEFAULT_NETWORK: &str = "default";
+
 /// Defines the operating mode for the LedgerRouter
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub enum LedgerMode {
     /// Return a fully initialized LedgerClient (cached mode)
     LedgerClient,
@@ -19,7 +18,14 @@ pub enum LedgerMode {
     ConfigOnly,
 }
 
+impl Default for LedgerMode {
+    fn default() -> Self {
+        LedgerMode::ConfigOnly
+    }
+}
+
 /// Result returned by get_ledger_for_identifier
+#[derive(Debug)]
 pub enum LedgerResult {
     /// A fully initialized LedgerClient
     Client(LedgerClient),
@@ -28,7 +34,7 @@ pub enum LedgerResult {
 }
 
 /// Configuration for a specific ledger network
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct LedgerClientConfig {
     pub chain_id: u64,
     pub rpc_node: String,
@@ -50,7 +56,7 @@ impl LedgerClientConfig {
             chain_id,
             rpc_node: rpc_node.to_string(),
             contract_configs: contract_configs.to_vec(),
-            network: network.map(|s| s.to_string()),
+            network: network.map(str::to_string),
             quorum_config: quorum_config.cloned(),
         }
     }
@@ -80,8 +86,8 @@ impl LedgerRouter {
     ) -> Self {
         LedgerRouter {
             configs,
-            default_network: default_network.unwrap_or("default").to_string(),
-            mode: mode.unwrap_or(LedgerMode::ConfigOnly),
+            default_network: default_network.unwrap_or(DEFAULT_NETWORK).to_string(),
+            mode: mode.unwrap_or_default(),
         }
     }
 
@@ -100,7 +106,7 @@ impl LedgerRouter {
             .get(&network)
             .or_else(|| self.configs.get(&self.default_network))
             .ok_or_else(|| {
-                VdrError::ClientInvalidResponse(format!(
+                VdrError::RouterConfigError(format!(
                     "Ledger for network '{}' not configured and no default network defined",
                     network
                 ))
@@ -113,7 +119,7 @@ impl LedgerRouter {
                     &config.rpc_node,
                     &config.contract_configs,
                     config.network.as_deref(),
-                    None,
+                    config.quorum_config.as_ref(),
                 )?;
                 Ok(LedgerResult::Client(client))
             }
@@ -130,13 +136,29 @@ impl LedgerRouter {
     /// The extracted network name as String
     pub fn extract_network(identifier: &str) -> VdrResult<String> {
         let parts: Vec<&str> = identifier.split(':').collect();
+
         if parts.len() < 3 {
-            return Err(VdrError::ClientInvalidResponse(format!(
-                "Invalid identifier: {}",
+            return Err(VdrError::RouterConfigError(format!(
+                "Invalid DID identifier: {}",
                 identifier
             )));
         }
-        Ok(parts.get(2).unwrap_or(&"default").to_string())
+
+        if parts[0] != "did" || parts[1] != "ethr" {
+            return Err(VdrError::RouterConfigError(format!(
+                "Unsupported DID method: {}",
+                identifier
+            )));
+        }
+
+        match parts.len() {
+            3 => Ok(DEFAULT_NETWORK.to_string()),
+            n if n >= 4 => Ok(parts[2].to_string()),
+            _ => Err(VdrError::RouterConfigError(format!(
+                "Invalid did:ethr format: {}",
+                identifier
+            ))),
+        }
     }
 
     /// Submits a transaction to a ledger based on its identifier
@@ -154,7 +176,7 @@ impl LedgerRouter {
     ) -> VdrResult<Vec<u8>> {
         match self.get_ledger_for_identifier(&identifier)? {
             LedgerResult::Client(client) => client.submit_transaction(transaction).await,
-            LedgerResult::Config(_) => Err(VdrError::ClientInvalidResponse(
+            LedgerResult::Config(_) => Err(VdrError::RouterConfigError(
                 "Cannot submit transaction in ConfigOnly mode".to_string(),
             )),
         }
@@ -166,7 +188,7 @@ impl LedgerRouter {
     /// A map of network names and their ping statuses
     pub async fn ping_all(&self) -> VdrResult<HashMap<String, PingStatus>> {
         if let LedgerMode::ConfigOnly = self.mode {
-            return Err(VdrError::ClientInvalidResponse(
+            return Err(VdrError::RouterConfigError(
                 "Cannot ping ledgers in ConfigOnly mode".to_string(),
             ));
         }
@@ -178,7 +200,7 @@ impl LedgerRouter {
                 &config.rpc_node,
                 &config.contract_configs,
                 config.network.as_deref(),
-                None,
+                config.quorum_config.as_ref(),
             )?;
             let ping_status = client.ping().await?;
             results.insert(network.clone(), ping_status);

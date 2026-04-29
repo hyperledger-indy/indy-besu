@@ -181,6 +181,68 @@ services:
         ipv4_address: 172.16.239.40
 
 
+
+
+
+
+
+
+
+
+
+  prometheus:
+    image: "prom/prometheus"
+    volumes:
+      - ./network/config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus:/prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    ports:
+      - 9090:9090/tcp
+    networks:
+      quorum-dev-quickstart:
+        ipv4_address: 172.16.239.32
+
+  grafana:
+    image: "grafana/grafana"
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_USERS_VIEWERS_CAN_EDIT=true
+    volumes:
+      - ./network/config/grafana/provisioning/:/etc/grafana/provisioning/
+      - grafana:/var/lib/grafana
+    ports:
+      - 3000:3000/tcp
+    networks:
+      quorum-dev-quickstart:
+        ipv4_address: 172.16.239.33
+
+  loki:
+    image: "grafana/loki"
+    volumes:
+      - ./network/infra/loki/loki.yml:/etc/loki/local-config.yaml
+    command: -config.file=/etc/loki/local-config.yaml
+    ports:
+      - 3100:3100/tcp
+    networks:
+      quorum-dev-quickstart:
+        ipv4_address: 172.16.239.34
+
+  promtail:
+    image: "grafana/promtail"
+    volumes:
+      - ./network/logs:/var/log
+      - ./network/infra/promtail/promtail.yml:/etc/promtail/config.yml
+    command: -config.file=/etc/promtail/config.yml
+    networks:
+      quorum-dev-quickstart:
+        ipv4_address: 172.16.239.35
+
+
+
+
+
+
 volumes:
   public-keys:
   prometheus:

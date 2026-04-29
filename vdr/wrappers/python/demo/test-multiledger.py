@@ -24,7 +24,8 @@ identity = {
 network1 = 'ledger1'
 network2 = 'ledger2'
 network3 = 'ledger3'
-project_root = f"{os.getcwd()}/../../.."
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.abspath(os.path.join(BASE_DIR, "../../../.."))
 
 
 def sign(secret: str, data: bytes):
@@ -253,4 +254,4 @@ async def demo():
     print(' Revocation Status List:' + status_list.to_string())
 
 if __name__ == "__main__":
-    asyncio.get_event_loop().run_until_complete(demo())
+    asyncio.run(demo())
