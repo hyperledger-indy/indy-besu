@@ -103,7 +103,7 @@ impl LedgerRouter {
             ledgers.insert(network_name, ledger_config);
         }
 
-        let default_network = default_network_name.unwrap_or_else(|| "default".to_string());
+        let default_network = default_network_name.unwrap_or_else(|| DEFAULT_NETWORK.to_string());
 
         // Initialize the underlying LedgerRouter (client mode)
         let router = LedgerRouter_::new(
@@ -131,9 +131,9 @@ impl LedgerRouter {
         let ledger_result = self.router.get_ledger_for_identifier(identifier)?;
 
         let client = match ledger_result {
-            LedgerResult::Client(c) => c,
+            LedgerResult::Client(c) => c.clone(),
             LedgerResult::Config(_) => {
-                return Err(VdrError::ClientInvalidResponse {
+                return Err(VdrError::RouterConfigError {
                     msg: "Expected LedgerClient but got config".to_string(),
                 });
             }

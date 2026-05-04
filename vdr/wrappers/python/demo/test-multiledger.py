@@ -75,7 +75,7 @@ async def demo():
     status = await router.ping_all()
     for ledger_name, ping_status in status.items():
         s = ping_status.status
-        # tenta pegar o nome do enum, senão imprime o próprio objeto
+        # Try to get the enum name; otherwise fallback to the object itself
         status_name = getattr(s, "name", str(s))
         print(f"  {ledger_name}: {{'status': '{status_name}'}}")
 
@@ -95,7 +95,7 @@ async def demo():
     receipt = await client.get_receipt(txn_hash)
     print(' Transaction receipt: ' + receipt)
 
-    print("3. Resolve DID Document:" +network1)
+    print("3. Resolve DID Document:" +network2)
     client = router.get_ledger_for_identifier(did)
     print("Router Return:" +client.network())
     resolved_did_doc = await DidResolver.resolve_did(client, did, None)
