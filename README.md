@@ -79,7 +79,7 @@ _Resources_ section. The [Docker for Mac](https://docs.docker.com/docker-for-mac
 
 ## Managing smart contracts
 
-See [README.md](/smart_contracts/README.md).
+See [README.md](./smart_contracts/README.md).
 
 ## Client library
 

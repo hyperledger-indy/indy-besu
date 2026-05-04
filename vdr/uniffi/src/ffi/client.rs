@@ -1,6 +1,7 @@
 // Copyright (c) 2024 DSR Corporation, Denver, Colorado.
 // https://www.dsr-corporation.com
 // SPDX-License-Identifier: Apache-2.0
+use std::sync::Arc;
 
 use crate::{
     ffi::{
@@ -15,7 +16,7 @@ use indy_besu_vdr::{ContractConfig as ContractConfig_, LedgerClient as LedgerCli
 
 #[derive(uniffi::Object)]
 pub struct LedgerClient {
-    pub client: LedgerClient_,
+    pub client: Arc<LedgerClient_>,
 }
 
 #[uniffi::export(async_runtime = "tokio")]
@@ -33,13 +34,13 @@ impl LedgerClient {
             .map(ContractConfig::into)
             .collect();
         let quorum_config = quorum_config.map(QuorumConfig::into);
-        let client = LedgerClient_::new(
+        let client = Arc::new(LedgerClient_::new(
             chain_id,
             &node_address,
             &contract_configs,
             network.as_deref(),
             quorum_config.as_ref(),
-        )?;
+        )?);
         Ok(LedgerClient { client })
     }
 

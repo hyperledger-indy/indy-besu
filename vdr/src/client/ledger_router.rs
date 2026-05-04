@@ -1,4 +1,7 @@
-use std::collections::HashMap;
+use std::{
+    collections::HashMap,
+    sync::{Arc, Mutex},
+};
 
 use crate::{
     client::LedgerClient,
@@ -28,7 +31,7 @@ impl Default for LedgerMode {
 #[derive(Debug)]
 pub enum LedgerResult {
     /// A fully initialized LedgerClient
-    Client(LedgerClient),
+    Client(Arc<LedgerClient>),
     /// A configuration-only LedgerClientConfig
     Config(LedgerClientConfig),
 }
@@ -67,6 +70,8 @@ pub struct LedgerRouter {
     configs: HashMap<String, LedgerClientConfig>,
     default_network: String,
     mode: LedgerMode,
+    // cache thread-safe
+    clients: Arc<Mutex<HashMap<String, Arc<LedgerClient>>>>,
 }
 
 impl LedgerRouter {
@@ -88,6 +93,7 @@ impl LedgerRouter {
             configs,
             default_network: default_network.unwrap_or(DEFAULT_NETWORK).to_string(),
             mode: mode.unwrap_or_default(),
+            clients: Arc::new(Mutex::new(HashMap::new())),
         }
     }
 
@@ -101,10 +107,15 @@ impl LedgerRouter {
     pub fn get_ledger_for_identifier(&self, identifier: &str) -> VdrResult<LedgerResult> {
         let network = Self::extract_network(identifier)?;
 
-        let config = self
+        let (resolved_network, config) = self
             .configs
             .get(&network)
-            .or_else(|| self.configs.get(&self.default_network))
+            .map(|c| (network.clone(), c))
+            .or_else(|| {
+                self.configs
+                    .get(&self.default_network)
+                    .map(|c| (self.default_network.clone(), c))
+            })
             .ok_or_else(|| {
                 VdrError::RouterConfigError(format!(
                     "Ledger for network '{}' not configured and no default network defined",
@@ -114,13 +125,23 @@ impl LedgerRouter {
 
         match self.mode {
             LedgerMode::LedgerClient => {
-                let client = LedgerClient::new(
+                // cache lookup
+                let mut cache = self.clients.lock().unwrap();
+
+                if let Some(client) = cache.get(&resolved_network).cloned() {
+                    return Ok(LedgerResult::Client(client));
+                }
+
+                let client = Arc::new(LedgerClient::new(
                     config.chain_id,
                     &config.rpc_node,
                     &config.contract_configs,
                     config.network.as_deref(),
                     config.quorum_config.as_ref(),
-                )?;
+                )?);
+
+                cache.insert(resolved_network.clone(), client.clone());
+
                 Ok(LedgerResult::Client(client))
             }
             LedgerMode::ConfigOnly => Ok(LedgerResult::Config(config.clone())),
@@ -151,14 +172,20 @@ impl LedgerRouter {
             )));
         }
 
-        match parts.len() {
-            3 => Ok(DEFAULT_NETWORK.to_string()),
-            n if n >= 4 => Ok(parts[2].to_string()),
-            _ => Err(VdrError::RouterConfigError(format!(
-                "Invalid did:ethr format: {}",
-                identifier
-            ))),
+        if parts.len() == 3 {
+            return Ok(DEFAULT_NETWORK.to_string());
         }
+
+        if parts.len() >= 4 {
+            return parts.get(2).map(|s| s.to_string()).ok_or_else(|| {
+                VdrError::RouterConfigError(format!("Invalid did:ethr format: {}", identifier))
+            });
+        }
+
+        Err(VdrError::RouterConfigError(format!(
+            "Invalid did:ethr format: {}",
+            identifier
+        )))
     }
 
     /// Submits a transaction to a ledger based on its identifier
@@ -194,16 +221,14 @@ impl LedgerRouter {
         }
 
         let mut results = HashMap::new();
-        for (network, config) in self.configs.iter() {
-            let client = LedgerClient::new(
-                config.chain_id,
-                &config.rpc_node,
-                &config.contract_configs,
-                config.network.as_deref(),
-                config.quorum_config.as_ref(),
-            )?;
-            let ping_status = client.ping().await?;
-            results.insert(network.clone(), ping_status);
+        for (network, _) in self.configs.iter() {
+            match self.get_ledger_for_identifier(&format!("did:ethr:{}:0x0", network))? {
+                LedgerResult::Client(client) => {
+                    let ping_status = client.ping().await?;
+                    results.insert(network.clone(), ping_status);
+                }
+                _ => {}
+            }
         }
         Ok(results)
     }
@@ -303,5 +328,11 @@ mod tests {
             }
             LedgerResult::Config(_) => panic!("Expected LedgerResult::Client, got Config"),
         }
+    }
+
+    #[test]
+    fn test_invalid_did_format() {
+        let err = LedgerRouter::extract_network("invalid").unwrap_err();
+        assert!(matches!(err, VdrError::RouterConfigError(_)));
     }
 }
