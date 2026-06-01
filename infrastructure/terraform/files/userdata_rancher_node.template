@@ -1,0 +1,34 @@
+#!/bin/bash -x
+
+TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+export IP_ADDRESS_HOST=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" -v http://169.254.169.254/latest/meta-data/public-ipv4)
+
+dnf install htop -y
+curl -sfL https://get.k3s.io | sh -
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+alias k=kubectl
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+
+helm repo add jetstack https://charts.jetstack.io
+helm upgrade -i cert-manager jetstack/cert-manager \
+  --namespace cert-manager \
+  --create-namespace \
+  --set crds.enabled=true \
+  --version 1.16.2 \
+  --wait \
+  --wait-for-jobs
+
+helm repo add rancher-stable https://releases.rancher.com/server-charts/stable
+helm upgrade -i rancher rancher-stable/rancher \
+  --namespace cattle-system \
+  --set hostname=$IP_ADDRESS_HOST.sslip.io \
+  --set bootstrapPassword=admin \
+  --set ingress.tls.source=letsEncrypt \
+  --set letsEncrypt.email=mirafzal.shavkatov@dsr-corporation.com \
+  --set letsEncrypt.ingress.class=traefik \
+  --set replicas=1 \
+  --set agentTLSMode=system-store \
+  --version 2.10.0 \
+  --create-namespace \
+  --wait \
+  --wait-for-jobs

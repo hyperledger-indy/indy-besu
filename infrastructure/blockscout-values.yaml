@@ -1,0 +1,410 @@
+# Default values for blockscout-stack.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+## Provide a name in place of blockscout-stack for `app:` labels
+##
+nameOverride: ""
+## Provide a name to substitute for the full names of resources
+##
+fullnameOverride: ""
+## Reference to one or more secrets to be used when pulling images
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+##
+imagePullSecrets: []
+## Blockscout configuration options. See frontend Docs
+## ref: https://github.com/blockscout/frontend/blob/main/docs/ENVS.md#blockchain-parameters
+##
+config:
+  network:
+    id: 1
+    name: Ether
+    shortname: Ether
+    currency:
+      name: Ether
+      symbol: ETH
+      decimals: 18
+  account:
+    enabled: false
+  testnet: false
+  ## If set to true will create service monitors for blockscout and stats
+  ##
+  prometheus:
+    enabled: false
+## Configuration options for backend
+##
+blockscout:
+  enabled: true
+  ## Currently only one replica is supported
+  ##
+  replicaCount: 1
+  ## Image parametes
+  ##
+  image:
+    repository: blockscout/blockscout
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  ## Init container configuration (used to run DB migrations)
+  ##
+  init:
+    enabled: true
+    command:
+      - /bin/sh
+    args:
+      - -c
+      - bin/blockscout eval "Elixir.Explorer.ReleaseTasks.create_and_migrate()"
+  ## Blockscout ENV vars
+  ## ref: https://docs.blockscout.com/for-developers/information-and-settings/env-variables
+  ##
+  env:
+    DATABASE_URL: "postgresql://postgres:postgres@blockscout-postgresql.default.svc.cluster.local:5432/postgres"
+    ETHEREUM_JSONRPC_VARIANT: "besu"
+    ETHEREUM_JSONRPC_HTTP_URL: "http://besu-node-bootnode-1.besu.svc.cluster.local:8545/"
+#    DATABASE_URL: "postgresql://blockscout:ceWb1MeLBEeOIfk65gU8EjF8@db:5432/blockscout"
+    ETHEREUM_JSONRPC_WS_URL: "ws://host.docker.internal:8546/"
+    ETHEREUM_JSONRPC_TRANSPORT: "http"
+    ETHEREUM_JSONRPC_DISABLE_ARCHIVE_BALANCES: "false"
+    ETHEREUM_JSONRPC_TRACE_URL: "http://besu-node-bootnode-1.besu.svc.cluster.local:8545/"
+    NETWORK: "Indy-Besu"
+    SUBNETWORK: "Indy-Besu"
+    LOGO: "/images/blockscout_logo.svg"
+    SECRET_KEY_BASE: "56NtB48ear7+wMSf0IQuWDAAazhpb31qyc7GiyspBP2vh7t5zlCsF5QDv76chXeN"
+    PORT: "4000"
+    EMISSION_FORMAT: "POA"
+    CHAIN_SPEC_PATH: "/opt/besu/genesis.json"
+    POOL_SIZE: "80"
+    POOL_SIZE_API: "10"
+    ECTO_USE_SSL: "false"
+    HEART_BEAT_TIMEOUT: "30"
+    BLOCK_TRANSFORMER: "base"
+    FOOTER_LOGO: "/images/blockscout_logo.svg"
+    FOOTER_LINK_TO_OTHER_EXPLORERS: "false"
+    FOOTER_OTHER_EXPLORERS: "{}"
+    SUPPORTED_CHAINS: "{}"
+    CACHE_BLOCK_COUNT_PERIOD: "7200"
+    CACHE_TXS_COUNT_PERIOD: "7200"
+    CACHE_ADDRESS_SUM_PERIOD: "3600"
+    CACHE_TOTAL_GAS_USAGE_PERIOD: "3600"
+    CACHE_ADDRESS_TRANSACTIONS_GAS_USAGE_COUNTER_PERIOD: "1800"
+    CACHE_TOKEN_HOLDERS_COUNTER_PERIOD: "3600"
+    CACHE_TOKEN_TRANSFERS_COUNTER_PERIOD: "3600"
+    CACHE_ADDRESS_WITH_BALANCES_UPDATE_INTERVAL: "1800"
+    CACHE_AVERAGE_BLOCK_PERIOD: "1800"
+    CACHE_MARKET_HISTORY_PERIOD: "21600"
+    CACHE_ADDRESS_TRANSACTIONS_COUNTER_PERIOD: "1800"
+    CACHE_ADDRESS_TOKENS_USD_SUM_PERIOD: "3600"
+    CACHE_ADDRESS_TOKEN_TRANSFERS_COUNTER_PERIOD: "1800"
+    TOKEN_METADATA_UPDATE_INTERVAL: "172800"
+    CONTRACT_VERIFICATION_ALLOWED_SOLIDITY_EVM_VERSIONS: "homestead,tangerineWhistle,spuriousDragon,byzantium,constantinople,petersburg,istanbul,berlin,london,paris,shanghai,default"
+    CONTRACT_VERIFICATION_ALLOWED_VYPER_EVM_VERSIONS: "byzantium,constantinople,petersburg,istanbul,berlin,paris,shanghai,default"
+    CONTRACT_MAX_STRING_LENGTH_WITHOUT_TRIMMING: "2040"
+    UNCLES_IN_AVERAGE_BLOCK_TIME: "false"
+    DISABLE_WEBAPP: "false"
+    API_V2_ENABLED: "true"
+    API_V1_READ_METHODS_DISABLED: "false"
+    API_V1_WRITE_METHODS_DISABLED: "false"
+    API_RATE_LIMIT_TIME_INTERVAL: "1s"
+    API_RATE_LIMIT_BY_IP_TIME_INTERVAL: "5m"
+    API_RATE_LIMIT: "50"
+    API_RATE_LIMIT_BY_KEY: "50"
+    API_RATE_LIMIT_BY_WHITELISTED_IP: "50"
+    API_RATE_LIMIT_WHITELISTED_IPS: ""
+    API_RATE_LIMIT_STATIC_API_KEY: ""
+    API_RATE_LIMIT_UI_V2_WITH_TOKEN: "5"
+    API_RATE_LIMIT_BY_IP: "3000"
+    DISABLE_INDEXER: "false"
+    DISABLE_REALTIME_INDEXER: "false"
+    DISABLE_CATCHUP_INDEXER: "false"
+    INDEXER_DISABLE_TOKEN_INSTANCE_REALTIME_FETCHER: "false"
+    INDEXER_DISABLE_TOKEN_INSTANCE_RETRY_FETCHER: "false"
+    INDEXER_DISABLE_TOKEN_INSTANCE_SANITIZE_FETCHER: "false"
+    INDEXER_DISABLE_TOKEN_INSTANCE_LEGACY_SANITIZE_FETCHER: "false"
+    INDEXER_DISABLE_PENDING_TRANSACTIONS_FETCHER: "false"
+    INDEXER_DISABLE_INTERNAL_TRANSACTIONS_FETCHER: "false"
+    SHOW_ADDRESS_MARKETCAP_PERCENTAGE: "true"
+    CHECKSUM_ADDRESS_HASHES: "true"
+    CHECKSUM_FUNCTION: "eth"
+    DISABLE_EXCHANGE_RATES: "true"
+    TXS_STATS_ENABLED: "true"
+    SHOW_PRICE_CHART: "false"
+    SHOW_PRICE_CHART_LEGEND: "false"
+    SHOW_TXS_CHART: "true"
+    TXS_HISTORIAN_INIT_LAG: "0"
+    TXS_STATS_DAYS_TO_COMPILE_AT_INIT: "10"
+    COIN_BALANCE_HISTORY_DAYS: "90"
+    APPS_MENU: "true"
+    EXTERNAL_APPS: "[]"
+    SHOW_MAINTENANCE_ALERT: "false"
+    CHAIN_ID: "1337"
+    MAX_SIZE_UNLESS_HIDE_ARRAY: "50"
+    HIDE_BLOCK_MINER: "false"
+    DISPLAY_TOKEN_ICONS: "false"
+    RE_CAPTCHA_DISABLED: "false"
+    JSON_RPC: ""
+    API_RATE_LIMIT_UI_V2_TOKEN_TTL_IN_SECONDS: "18000"
+    FETCH_REWARDS_WAY: "trace_block"
+    MICROSERVICE_SC_VERIFIER_ENABLED: "true"
+    MICROSERVICE_SC_VERIFIER_URL: "https://eth-bytecode-db.services.blockscout.com/"
+    MICROSERVICE_SC_VERIFIER_TYPE: "eth_bytecode_db"
+    MICROSERVICE_ETH_BYTECODE_DB_INTERVAL_BETWEEN_LOOKUPS: "10m"
+    MICROSERVICE_ETH_BYTECODE_DB_MAX_LOOKUPS_CONCURRENCY: "10"
+#    MICROSERVICE_VISUALIZE_SOL2UML_ENABLED: "true"
+#    MICROSERVICE_VISUALIZE_SOL2UML_URL: "http://visualizer:8050/"
+#    MICROSERVICE_SIG_PROVIDER_ENABLED: "true"
+#    MICROSERVICE_SIG_PROVIDER_URL: "http://sig-provider:8050/"
+    DECODE_NOT_A_CONTRACT_CALLS: "true"
+    ACCOUNT_ENABLED: "false"
+    ACCOUNT_REDIS_URL: "redis://redis_db:6379"
+    EIP_1559_ELASTICITY_MULTIPLIER: "2"
+    SOURCIFY_INTEGRATION_ENABLED: "false"
+    SHOW_TENDERLY_LINK: "false"
+  # NAME: VALUE
+  ## Set ENV vars via secret, this can be usefull for DB connection params, api keys, etc.
+  ##
+  envFromSecret: []
+  # NAME: VALUE
+  ## Command to start blockscout instance
+  ##
+  command:
+    - /bin/sh
+  args:
+    - -c
+    - bin/blockscout start
+  ## Annotations to add to blockscout pod
+  podAnnotations: {}
+
+  podSecurityContext: {}
+  ## SecurityContext holds pod-level security attributes and common container settings.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+  ##
+  securityContext: {}
+  terminationGracePeriodSeconds: 300
+  ## Liveness probe
+  ##
+  livenessProbe:
+    enabled: true
+    path: /api/v1/health/liveness
+    params:
+      initialDelaySeconds: 100
+      periodSeconds: 100
+      timeoutSeconds: 30
+  ## Readiness probe
+  ##
+  readinessProbe:
+    enabled: true
+    path: /api/v1/health/readiness
+    params:
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      timeoutSeconds: 60
+
+  service:
+    type: ClusterIP
+    port: 80
+  ## Configure ingress resource that allow you to access the blockscout installation.
+  ## ref: http://kubernetes.io/docs/user-guide/ingress/
+  ##
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hostname: chart-example.local
+    tls:
+      enabled: false
+    paths:
+      - path: /api
+        pathType: Prefix
+      - path: /socket
+        pathType: Prefix
+
+  resources:
+    limits:
+      cpu: 1
+      memory: 2Gi
+    requests:
+      cpu: 500m
+      memory: 1Gi
+## Configuration options for frontend
+##
+frontend:
+  enabled: true
+  ## Image parametes
+  image:
+    repository: ghcr.io/blockscout/frontend
+    tag: latest
+    pullPolicy: IfNotPresent
+
+  replicaCount: 1
+  ## Annotations to add to frontend pod
+  ##
+  podAnnotations: {}
+
+  podSecurityContext: {}
+  ## SecurityContext holds pod-level security attributes and common container settings.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+  ##
+  securityContext: {}
+
+  service:
+    type: ClusterIP
+    port: 80
+  ## Configure ingress resource that allow you to access the frontend installation.
+  ## ref: http://kubernetes.io/docs/user-guide/ingress/
+  ##
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hostname: chart-example.local
+    tls:
+      enabled: false
+    paths:
+      - path: /
+
+  resources:
+    limits:
+      memory: "384Mi"
+      cpu: 200m
+    requests:
+      memory: "384Mi"
+      cpu: 200m
+  ## Liveness probe
+  ##
+  livenessProbe:
+    enabled: true
+    path: /api/healthz
+    params:
+      initialDelaySeconds: 100
+      periodSeconds: 100
+      timeoutSeconds: 30
+  ## Readiness probe
+  ##
+  readinessProbe:
+    enabled: true
+    path: /api/healthz
+    params:
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      timeoutSeconds: 30
+  ## Frontend ENV vars
+  ## ref: https://github.com/blockscout/frontend/blob/main/docs/ENVS.md
+  ##
+  env:
+    NEXT_PUBLIC_API_HOST: "localhost:26000"
+    NEXT_PUBLIC_API_PROTOCOL: "http"
+    #    NEXT_PUBLIC_STATS_API_HOST: "http://localhost:26001"
+    NEXT_PUBLIC_NETWORK_NAME: Indy-Besu
+    NEXT_PUBLIC_NETWORK_SHORT_NAME: Indy-Besu
+    NEXT_PUBLIC_NETWORK_ID: "5"
+    NEXT_PUBLIC_NETWORK_CURRENCY_NAME: "Ether"
+    NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL: "ETH"
+    NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS: "18"
+    NEXT_PUBLIC_API_BASE_PATH: "/"
+    NEXT_PUBLIC_APP_HOST: "localhost:26000"
+    NEXT_PUBLIC_APP_PROTOCOL: "http"
+    NEXT_PUBLIC_HOMEPAGE_CHARTS: "['daily_txs']"
+    #    NEXT_PUBLIC_VISUALIZE_API_HOST: "http://localhost:26002"
+    NEXT_PUBLIC_IS_TESTNET: "true"
+    NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL: "ws"
+    NEXT_PUBLIC_API_SPEC_URL: "https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml"
+    NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE: validation
+    NEXT_PUBLIC_GAS_TRACKER_ENABLED: false
+    NEXT_PUBLIC_VIEWS_TX_HIDDEN_FIELDS: '["value","tx_fee"]'
+  # NAME: VALUE
+  envFromSecret: []
+  # NAME: VALUE
+
+stats:
+  enabled: false
+  ## Image parametes
+  ##
+  image:
+    repository: ghcr.io/blockscout/stats
+    tag: latest
+    pullPolicy: IfNotPresent
+
+  replicasCount: 1
+  service:
+    type: ClusterIP
+    port: 80
+    metricsPort: 6060
+
+  podAnnotations: {}
+
+  podSecurityContext: {}
+
+  securityContext: {}
+
+  ## Configure ingress resource that allow you to access the stats installation.
+  ## ref: http://kubernetes.io/docs/user-guide/ingress/
+  ##
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hostname: chart-example-stats.local
+    tls:
+      enabled: false
+    paths:
+      - path: /
+        pathType: Prefix
+
+  resources:
+    limits:
+      memory: "512Mi"
+      cpu: 250m
+    requests:
+      memory: 512Mi
+      cpu: 250m
+  ## Files to mount to stats pod
+  ##
+  files:
+    enabled: false
+    list: {}
+      # file.txt: |
+    #   test
+    mountPath: /tmp/path
+
+  ## Liveness probe
+  ##
+  livenessProbe:
+    enabled: false
+    path: /health
+    params:
+      initialDelaySeconds: 100
+      periodSeconds: 100
+      timeoutSeconds: 30
+  ## Readiness probe
+  ##
+  readinessProbe:
+    enabled: false
+    path: /health
+    params:
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      timeoutSeconds: 60
+  ## Stats ENV vars
+  ## ref: https://github.com/blockscout/blockscout-rs/tree/main/stats#env
+  env: []
+  # NAME: VALUE
+  envFromSecret: []
+  # NAME: VALUE
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+## Node labels for blockscout-stack pod assignment
+## Ref: https://kubernetes.io/docs/user-guide/node-selection/
+##
+nodeSelector: {}
+
+tolerations: []
+
+## Affinity for pod assignment
+## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+##
+affinity: {}

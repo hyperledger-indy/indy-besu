@@ -1,0 +1,8 @@
+rancher2_api_url = ""
+rancher2_admin_password = "" # FIXME
+# rancher2_insecure
+
+# aws cloud credentials
+# aws_creds_name
+aws_access_key = ""
+aws_secret_key = ""

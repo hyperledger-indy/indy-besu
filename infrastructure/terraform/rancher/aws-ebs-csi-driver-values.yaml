@@ -1,0 +1,6 @@
+storageClasses:
+ - name: ebs-sc
+#   annotations:
+#     storageclass.kubernetes.io/is-default-class: "true"
+   volumeBindingMode: Immediate
+   reclaimPolicy: Retain

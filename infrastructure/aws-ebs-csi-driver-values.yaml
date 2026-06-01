@@ -1,0 +1,10 @@
+storageClasses:
+  - name: ebs-sc
+    #   annotations:
+    #     storageclass.kubernetes.io/is-default-class: "true"
+    volumeBindingMode: Immediate
+    reclaimPolicy: Delete
+controller:
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: arn:aws:iam::{org_id}:role/k8s-ebs-csi
