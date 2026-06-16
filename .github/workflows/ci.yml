@@ -106,7 +106,7 @@ jobs:
         working-directory: smart_contracts
 
       - name: Archive contract artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: smart-contracts-artifacts
           path: smart_contracts/artifacts/**
@@ -125,7 +125,7 @@ jobs:
           toolchain: stable
 
       - name: Download contract artifcats
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: smart-contracts-artifacts
           path: smart_contracts/artifacts
